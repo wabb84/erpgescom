@@ -14,7 +14,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UserLoginRepository userRepository;
 	
 	@Override
-	public UsuarioDatosLoginDto FindByDatosLogin(Long idusuario) {
-   		return userRepository.FindByDatosLogin(idusuario);
+	public UsuarioDatosLoginDto FindByDatosLogin(String codusuario) {
+   		return userRepository.FindByDatosLogin(codusuario);
    	}	
 }

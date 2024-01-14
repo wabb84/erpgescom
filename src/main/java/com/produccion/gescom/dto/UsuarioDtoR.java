@@ -8,4 +8,5 @@ import lombok.Getter;
 public class UsuarioDtoR  implements Serializable {
 	private static final long serialVersionUID = 5926468583005150707L;
 	private Long idusuario;
+	private String codusuario; 
 }

@@ -18,11 +18,11 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
     UserEntity getName(String username);
 	
 	@Transactional(readOnly=true)
-	@Query(value = "select a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil\r\n"
+	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil\r\n"
 			+ "   from usuario a\r\n"
 			+ "   inner join socieda b on b.idsocieda = a.idsocieda\r\n"
 			+ "   inner join usuarioper c on c.idusuario = a.iduser\r\n"
-			+ "   where a.iduser = :idusuario" ,nativeQuery = true)
+			+ "   where a.codusuario = :codusuario" ,nativeQuery = true)
 	
-	public UsuarioDatosLoginDto FindByDatosLogin(@Param("idusuario") Long idusuario);
+	public UsuarioDatosLoginDto FindByDatosLogin(@Param("codusuario") String codusuario);
 }

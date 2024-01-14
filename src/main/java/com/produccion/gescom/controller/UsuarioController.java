@@ -3,7 +3,6 @@ package com.produccion.gescom.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.produccion.gescom.dto.UsuarioDatosLoginDto;
 import com.produccion.gescom.dto.UsuarioDtoR;
-import com.produccion.gescom.entity.TipoDocumento;
 import com.produccion.gescom.services.MenuService;
 import com.produccion.gescom.services.UsuarioService;
 import com.produccion.gescom.dto.MenulistaDto;
@@ -32,7 +30,7 @@ public class UsuarioController {
 	@PostMapping("/datos")
 	public ResponseEntity<?> ConsultaUsuarioLogin(@RequestBody UsuarioDtoR userDtoR) throws Exception {
 		Map<String, Object> response = new HashMap<>();
-		UsuarioDatosLoginDto usuariologindatos = userservice.FindByDatosLogin(userDtoR.getIdusuario());
+		UsuarioDatosLoginDto usuariologindatos = userservice.FindByDatosLogin(userDtoR.getCodusuario());
 		if (usuariologindatos == null){
 			response.put("error", "No existe Usuario");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
