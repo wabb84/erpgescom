@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.produccion.gescom.entity.UserEntity;
 import com.produccion.gescom.repository.UserLoginRepository;
 
@@ -22,7 +21,6 @@ import com.produccion.gescom.repository.UserLoginRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
