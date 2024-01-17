@@ -1,6 +1,7 @@
 package com.produccion.gescom.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.produccion.gescom.dto.SociedaDto;
 import com.produccion.gescom.dto.SociedaDtoR;
+import com.produccion.gescom.dto.SociedaListaDto;
 import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.services.SociedaService;
@@ -30,7 +32,19 @@ public class SociedaController {
 	@Autowired
 	private SociedaService sociedaservice;
 	
-	@PostMapping("/nuevosocieda")
+	@PostMapping("/lista")
+	public ResponseEntity<?> ListaSocieda() throws Exception {
+		//Map<String, Object> response = new HashMap<>();
+		List<SociedaListaDto> sociedalista = sociedaservice.sociedaLista();
+		//if (sociedacon == null){
+		//	response.put("error", "No existe la Sociedad");
+		//	return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		//}
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		return ResponseEntity.ok(sociedalista);
+	}	
+	
+	@PostMapping("/nuevo")
 	public ResponseEntity<?> NuevaSocieda(@Valid @RequestBody SociedaDtoR sociedaDtoR, BindingResult result) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		
@@ -58,7 +72,7 @@ public class SociedaController {
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 	}	
 	
-	@PostMapping("/consultasocieda")
+	@PostMapping("/consulta")
 	public ResponseEntity<?> ConsultaSocieda(@RequestBody SociedaDtoR sociedaDtoR) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		SociedaDto sociedacon = sociedaservice.consulta(sociedaDtoR.getId());
@@ -70,7 +84,7 @@ public class SociedaController {
 		return ResponseEntity.ok(sociedacon);
 	}	
 	
-	@PostMapping("/actualizasocieda")
+	@PostMapping("/actualiza")
 	public ResponseEntity<?> ActualizaSocieda(@Valid @RequestBody SociedaDtoR sociedaDtoR, BindingResult result) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		

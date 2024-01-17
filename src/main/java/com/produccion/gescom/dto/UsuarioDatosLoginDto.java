@@ -8,4 +8,5 @@ public interface UsuarioDatosLoginDto {
 	Long getIdrubro();
 	String getNombrecome();
 	Long getIdperfil();
+	String getSerie();
 }

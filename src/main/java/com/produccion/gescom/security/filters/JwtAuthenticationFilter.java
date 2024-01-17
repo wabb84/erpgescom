@@ -107,8 +107,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         httpResponse.put("token", token);
         httpResponse.put("Message", "Autenticación Correcta");
         httpResponse.put("username", user.getUsername());
-        //httpResponse.put("expirado", user.isAccountNonExpired());
+        httpResponse.put("rol", user.getAuthorities());
         
+        //httpResponse.put("expirado", user.isAccountNonExpired());
         //httpResponse.put("td_c", datoscontribuyente.getTd_c());
         //httpResponse.put("co_num", datoscontribuyente.getCo_num());
         //httpResponse.put("co_nl", datoscontribuyente.getCo_nl());

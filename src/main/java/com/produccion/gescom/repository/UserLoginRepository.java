@@ -1,5 +1,6 @@
 package com.produccion.gescom.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.produccion.gescom.dto.UsuarioDatosLoginDto;
+import com.produccion.gescom.dto.UsuarioEditaDto;
+import com.produccion.gescom.dto.UsuarioListaDto;
 import com.produccion.gescom.entity.UserEntity;
 
 @Repository
@@ -18,11 +21,21 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
     UserEntity getName(String username);
 	
 	@Transactional(readOnly=true)
-	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil\r\n"
+	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil, b.serie\r\n"
 			+ "   from usuario a\r\n"
 			+ "   inner join socieda b on b.idsocieda = a.idsocieda\r\n"
-			+ "   inner join usuarioper c on c.idusuario = a.iduser\r\n"
+			+ "   left join usuarioper c on c.idusuario = a.iduser\r\n"
 			+ "   where a.codusuario = :codusuario" ,nativeQuery = true)
-	
 	public UsuarioDatosLoginDto FindByDatosLogin(@Param("codusuario") String codusuario);
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select iduser,codusuario,desusuario from usuario where idsocieda = :idsocieda",nativeQuery = true)
+	public List<UsuarioListaDto> usuarioLista(@Param("idsocieda") Long idsocieda);
+
+	@Transactional(readOnly=true)
+	@Query(value = "select desusuario,email,telefono,idtipodoc,numerodoc,estadousuario,fechaini,fechafin,estadopas\r\n"
+			+ "	   from usuario\r\n"
+			+ "	   where iduser = :iduser" ,nativeQuery = true)
+	
+	public UsuarioEditaDto EditaUsuario(@Param("iduser") Long iduser);
 }

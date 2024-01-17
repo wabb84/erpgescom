@@ -1,8 +1,11 @@
 package com.produccion.gescom.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.produccion.gescom.dto.SociedaDto;
+import com.produccion.gescom.dto.SociedaListaDto;
 import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.repository.SociedaRepository;
 
@@ -29,4 +32,10 @@ public class SociedaServiceImpl implements SociedaService {
 	public Socieda edita(Long sociedaid) {
 		return sociedarep.findById(sociedaid).orElse(null);
 	}
+	
+	@Override
+	public List<SociedaListaDto> sociedaLista() {
+		return sociedarep.sociedaLista();
+	}
+	
 }
