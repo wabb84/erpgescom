@@ -9,4 +9,7 @@ public interface UsuarioDatosLoginDto {
 	String getNombrecome();
 	Long getIdperfil();
 	String getSerie();
+	String getSexo();
+	String getEmail();
+	String getTelefono();
 }

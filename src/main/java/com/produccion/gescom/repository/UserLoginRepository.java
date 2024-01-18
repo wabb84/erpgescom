@@ -21,7 +21,8 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
     UserEntity getName(String username);
 	
 	@Transactional(readOnly=true)
-	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil, b.serie\r\n"
+	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil, b.serie, a.sexo,\r\n"
+			+ "   a.email, a.telefono\r\n"
 			+ "   from usuario a\r\n"
 			+ "   inner join socieda b on b.idsocieda = a.idsocieda\r\n"
 			+ "   left join usuarioper c on c.idusuario = a.iduser\r\n"
@@ -33,7 +34,7 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
 	public List<UsuarioListaDto> usuarioLista(@Param("idsocieda") Long idsocieda);
 
 	@Transactional(readOnly=true)
-	@Query(value = "select desusuario,email,telefono,idtipodoc,numerodoc,estadousuario,fechaini,fechafin,estadopas\r\n"
+	@Query(value = "select desusuario,email,telefono,idtipodoc,numerodoc,estadousuario,fechaini,fechafin,estadopas,sexo\r\n"
 			+ "	   from usuario\r\n"
 			+ "	   where iduser = :iduser" ,nativeQuery = true)
 	

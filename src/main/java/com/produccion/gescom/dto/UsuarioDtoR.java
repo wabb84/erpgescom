@@ -22,6 +22,7 @@ public class UsuarioDtoR  implements Serializable {
 	private Date fechafinal;
 	private String serie;
 	private String estadopas;
+	private String sexo;
 	
 	private Long idusuario;
 	private String operacion;

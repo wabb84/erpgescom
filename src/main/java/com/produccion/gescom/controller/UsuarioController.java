@@ -19,6 +19,7 @@ import com.produccion.gescom.dto.UsuarioDatosLoginDto;
 import com.produccion.gescom.dto.UsuarioDtoR;
 import com.produccion.gescom.dto.UsuarioListaDto;
 import com.produccion.gescom.entity.EEstadoUsuario;
+import com.produccion.gescom.entity.ESexo;
 //import com.produccion.gescom.entity.ETipoPersona;
 //import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.entity.UserEntity;
@@ -83,6 +84,8 @@ public class UsuarioController {
 		usuarionew.setIdsocieda(userDtoR.getIdsocieda());
 		usuarionew.setIdtipodoc(userDtoR.getIdtipodoc());
 		usuarionew.setNumdocu(userDtoR.getNumerodoc());
+		usuarionew.setEstadousuario(userDtoR.getEstadousario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
+		usuarionew.setSexo(userDtoR.getSexo().equals("M") ? ESexo.M : ESexo.F);
 		usuarionew.setEstadousuario(userDtoR.getEstadousario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
 		usuarionew.setFechai(userDtoR.getFechaini());
 		usuarionew.setFechaf(userDtoR.getFechafinal());
