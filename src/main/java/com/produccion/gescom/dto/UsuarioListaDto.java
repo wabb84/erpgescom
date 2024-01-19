@@ -1,7 +1,7 @@
 package com.produccion.gescom.dto;
 
 public interface UsuarioListaDto {
-	Long getIduser();
+	Long getIdusuario();
 	String getCodusuario();
 	String getDesusuario();
 }

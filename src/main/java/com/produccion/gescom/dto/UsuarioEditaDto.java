@@ -11,4 +11,5 @@ public interface UsuarioEditaDto {
 	Date getFechaini();
 	Date getFechafin();
 	String getEstadopass();
+	String getSexo();
 }

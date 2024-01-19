@@ -1,12 +1,19 @@
 package com.produccion.gescom.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.FetchType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+//import jakarta.persistence.ManyToMany;
+//import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,4 +44,14 @@ public class Perfil extends Auditable<String> implements Serializable  {
 	 @NotNull
 	 @Column(name="idsocieda")
 	 private Long idsocieda;
+	 
+	 //@OneToMany(cascade = CascadeType.ALL,mappedBy = "perfilmap")
+	 //private List<Perfildet> perfildet;
+	 
+	 @OneToMany(mappedBy = "perfilmap", cascade = CascadeType.ALL)
+	 private List<Perfildet> perfildet;
+	 
+	 
+	 
 }
+

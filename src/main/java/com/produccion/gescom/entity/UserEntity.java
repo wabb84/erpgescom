@@ -83,4 +83,9 @@ public class UserEntity extends Auditable<String> implements Serializable{
 	@ManyToMany(fetch = FetchType.EAGER, targetEntity = Rol.class, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "usuarol", joinColumns = @JoinColumn(name = "idusuario"), inverseJoinColumns = @JoinColumn(name = "idrol"))
 	private Set<Rol> roles;
+	
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Perfil.class, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "usuarioper", joinColumns = @JoinColumn(name = "idusuario"), inverseJoinColumns = @JoinColumn(name = "idperfil"))
+	private Perfil perfil;
+	
 }
