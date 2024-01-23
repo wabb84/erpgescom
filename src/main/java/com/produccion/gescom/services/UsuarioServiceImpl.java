@@ -42,7 +42,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Override
 	public UserEntity Datospruebauser(Long iduser) {
-		logger.info("wbarrantes2");
+		//logger.info("wbarrantes2");
 		return userRepository.findById(iduser).orElse(null);
 	};
 	

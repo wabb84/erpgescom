@@ -14,7 +14,7 @@ import com.produccion.gescom.dto.SociedaListaDto;
 import com.produccion.gescom.entity.Socieda;
 
 @Repository
-public interface SociedaRepository  extends JpaRepository<Socieda, Long> {
+public interface SociedaRepository extends JpaRepository<Socieda, Long> {
 	@Transactional(readOnly=true)
 	@Query(value = "select dessocieda as sociedanombre, tipopersona,idtipodoc,numerodoc as numerodocumento,idrubro,idpais,nombrecome as nombrecomercial,serie,estadosocieda\r\n"
 			+ "   from socieda\r\n"
