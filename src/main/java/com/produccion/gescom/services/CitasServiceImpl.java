@@ -5,11 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.produccion.gescom.entity.Cita;
+import com.produccion.gescom.entity.Seriexdoc;
 import com.produccion.gescom.repository.CitaRepository;
+import com.produccion.gescom.repository.SeriexdocRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
+
 @Service
 @RequiredArgsConstructor
 public class CitasServiceImpl implements CitasService {
@@ -18,8 +22,13 @@ public class CitasServiceImpl implements CitasService {
 	@Autowired
 	private CitaRepository citarep;
 	
+	@Autowired
+	private SeriexdocRepository seriexdocrep;
+	
 	@Override
-	public Cita save(Cita cita) {
+	@Transactional
+	public Cita save(Cita cita, Seriexdoc seriexdoc) {
+		seriexdocrep.save(seriexdoc);
 		return citarep.save(cita);
 	}	
 	

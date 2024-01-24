@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TipoDocumentoImpl implements TipoDocumentoService {
+	
 	@Autowired
 	private TipoDocumentoRepository tipodocrep;
 	
@@ -19,6 +20,20 @@ public class TipoDocumentoImpl implements TipoDocumentoService {
 	public List<TipoDocumento> listaTipoDocumento()
 	{
 		return tipodocrep.findAll();
-	}	
+	}
+	
+	/*private final TipoDocumentoRepository tipodocrep;
+
+    @Autowired
+    public void TipoDocumentoImpl2(TipoDocumentoRepository tipodocrep) {
+        this.tipodocrep = tipodocrep;
+    }
+    
+    @Override
+	public List<TipoDocumento> listaTipoDocumento()
+	{
+		return tipodocrep.findAll();
+	}*/
+	
 
 }

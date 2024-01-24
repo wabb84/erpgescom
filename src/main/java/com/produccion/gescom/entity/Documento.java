@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,44 +18,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="cita")
-public class Cita extends Auditable<String> implements Serializable {
+@Table(name="documento")
+public class Documento implements  Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="idcita", unique=true, nullable=false)
+	@Column(name="iddocumento", unique=true, nullable=false)
 	private Long id;
 	
 	@NotNull
-	@Column(name="idagenda")
-	private Long idagenda;
+	@Column(name="descripcion")
+	private String descripcion;
 	
-	@NotNull
-	@Column(name="idhistoria")
-	private Long idhistoria;
+	@Column(name="serie")
+	private String serie;
+
+	@Column(name="tipodoc")
+	private String tipodoc;
+
+	@Column(name="tiposerie")
+	private String tiposerie;
+	
+	@Column(name="anio")
+	private String anio;
 	
 	@NotNull
 	@Column(name="idsocieda")
 	private Long idsocieda;
 	
-	@NotNull
-	@Column(name="serie")
-	private String serie;
-	
-	@NotNull
-	@Column(name="anio")
-	private String anio;
-	
-	@NotNull
-	@Column(name="mes")
-	private String mes;
-	
-	@NotNull
-	@Column(name="numeroserie")
-	private String numeroserie;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private EEstadoCita estadocita;
 }
