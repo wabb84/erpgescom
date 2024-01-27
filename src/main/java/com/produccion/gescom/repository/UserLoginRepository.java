@@ -22,7 +22,7 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
 	
 	@Transactional(readOnly=true)
 	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil, b.serie, a.sexo,\r\n"
-			+ "   a.email, a.telefono\r\n"
+			+ "   a.email, a.telefono, a.estadopas\r\n"
 			+ "   from usuario a\r\n"
 			+ "   inner join socieda b on b.idsocieda = a.idsocieda\r\n"
 			+ "   left join usuarioper c on c.idusuario = a.iduser\r\n"

@@ -5,5 +5,5 @@ public interface MenulistaDto {
 	String getDesmenu();
 	String getTiponivel();
 	String getIcon();
-	//Long getIdpadre();
+	Long getIdpadre();
 }

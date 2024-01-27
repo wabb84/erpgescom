@@ -40,6 +40,7 @@ import com.produccion.gescom.services.UsuarioService;
 import jakarta.validation.Valid;
 
 import com.produccion.gescom.dto.MenulistaDto;
+import com.produccion.gescom.dto.ReinicioPasswordDtoR;
 import com.produccion.gescom.dto.SociedaDto;
 import com.produccion.gescom.dto.SociedaDtoR;
 
@@ -104,7 +105,7 @@ public class UsuarioController {
 		usuarionew.setFechai(userDtoR.getFechaini());
 		usuarionew.setFechaf(userDtoR.getFechafinal());
 		usuarionew.setIdusuario(userDtoR.getIdusuario());
-		usuarionew.setEstadopas("0");
+		usuarionew.setEstadopas("1");
 		usuarionew.prePersist();
 		
 		try {
@@ -114,6 +115,39 @@ public class UsuarioController {
 		      response.put("error", "Error al Grabar el Usuario : " + e.getMessage());
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}    
+		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+	}
+	
+	@PostMapping("/reinicio")
+	public ResponseEntity<?> reinicioPassword(@RequestBody ReinicioPasswordDtoR reinicioDtoR) throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		UserEntity user = userservice.edita(reinicioDtoR.getIdusuario());
+		
+		if (user == null){
+			response.put("error", "Error Usuario no existe");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		if (!passwordEncoder.matches(reinicioDtoR.getPassant(), user.getPassword()))
+		{
+			response.put("error", "Error Password anterior incorrecto");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		
+		if (!reinicioDtoR.getPassnew().equals(reinicioDtoR.getPasscon()) )
+		{
+			response.put("error", "Error Password Nuevo y confirmación deben ser iguales");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+				
+		user.setPassword(passwordEncoder.encode(reinicioDtoR.getPassnew())); 
+		
+		try {
+			userservice.save(user);
+		    response.put("mensaje", "Password actualizado con éxito");
+		} catch (Exception e) {
+		      response.put("Error", "Error al Grabar la actualización del Password");
+		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}   
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 	}
 	

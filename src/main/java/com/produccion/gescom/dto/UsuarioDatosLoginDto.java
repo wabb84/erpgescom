@@ -12,4 +12,5 @@ public interface UsuarioDatosLoginDto {
 	String getSexo();
 	String getEmail();
 	String getTelefono();
+	String getEstadopas();
 }
