@@ -46,28 +46,33 @@ public class CitasController {
 	private DatosVarios datosvarios;
 	
 	private String TIDO = "CI";
-	private String ANIO = "";
-	private String MES = "";
+	private String ANIO;
+	private String MES;
+	private String ANIOACTUAL; 
+	private String MESACTUAL; 
 	
 	@PostMapping("/nueva")
 	//public ResponseEntity<?> NuevCita(@Valid @RequestBody ConsultorioDtoR consultorioDtoR, BindingResult result) throws Exception {
 	public ResponseEntity<?> NuevCita(@Valid @RequestBody CitaDtoR citadtor) throws Exception {
-		Documento documento = documentoservice.BuscaDocumentoAnio(citadtor.getIdsocieda(), TIDO,ANIO);
-		MES = documento.getTiposerie().equals("A") ? "00" : datosfecha.Obdatosfecha("M");
+		ANIOACTUAL = datosfecha.Obdatosfecha("A"); 
+		MESACTUAL = datosvarios.seriadoNumero(Long.parseLong(datosfecha.Obdatosfecha("M")),2L);
+		Documento documento = documentoservice.BuscaDocumentoAnio(citadtor.getIdsocieda(),TIDO,ANIOACTUAL);
+		ANIO = documento.getTiposerie().equals("T") ? "0000" : documento.getTiposerie().equals("A") ? ANIOACTUAL : ANIOACTUAL;
+		MES = documento.getTiposerie().equals("T") ? "00" : documento.getTiposerie().equals("A") ? "00" : MESACTUAL;
 		//System.out.println(datosvarios.seriadoNumero(1L, 15L));
 		Seriexdoc seriexdoc = seriexdocservice.BuscaDocumentoAnioMes(citadtor.getIdsocieda(), documento.getId(), ANIO, MES);
 		seriexdoc.setCorrelativo(seriexdoc.getCorrelativo() + 1 );
 		
 		Cita cita = new Cita();
-		cita.setAnio(ANIO);
-		cita.setMes(MES);
+		cita.setAnio(ANIOACTUAL);
+		cita.setMes(MESACTUAL);
+		cita.setSerie(documento.getSerie());
 		cita.setNumeroserie(datosvarios.seriadoNumero(seriexdoc.getCorrelativo(), seriexdoc.getLongitud()));
 		
-		cita.setIdagenda(1L);
+		cita.setIdagenda(2L);
 		cita.setIdhistoria(1L);
 		
 		cita.setIdsocieda(citadtor.getIdsocieda());
-		cita.setSerie(documento.getSerie());
 		cita.setEstadocita(EEstadoCita.R);
 		cita.setIdusuario(citadtor.getIdusuario());
 		cita.setIdusuariom(0L);

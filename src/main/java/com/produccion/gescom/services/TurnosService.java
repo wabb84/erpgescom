@@ -10,4 +10,5 @@ public interface TurnosService {
 	public TurnosDto consulta(Long idturnos);
 	public List<TurnosDto> turnosLista(Long idsocieda);
 	public Turnos edita(Long idturnos);
+	public List<TurnosDto> turnosListaCita(Long idsocieda);
 }

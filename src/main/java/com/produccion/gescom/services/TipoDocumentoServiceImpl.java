@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class TipoDocumentoImpl implements TipoDocumentoService {
+public class TipoDocumentoServiceImpl implements TipoDocumentoService {
 	
 	@Autowired
 	private TipoDocumentoRepository tipodocrep;

@@ -33,7 +33,7 @@ private static final Log logger = LogFactory.getLog(TurnosController.class);
 	
 	@PostMapping("/lista")
 	public ResponseEntity<?> ListaTurnos(@Valid @RequestBody TurnosDtoR turnosdtor) throws Exception {
-		logger.info(turnosdtor.getIdsocieda());
+		//logger.info(turnosdtor.getIdsocieda());
 		List<TurnosDto> turnoslista = turnosservice.turnosLista(turnosdtor.getIdsocieda());
 		return ResponseEntity.ok(turnoslista);
 	}	
@@ -103,5 +103,15 @@ private static final Log logger = LogFactory.getLog(TurnosController.class);
 		}    
 		
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+	}
+	
+	@PostMapping("/listacitas")
+	public ResponseEntity<?> ListaTurnosCitas(@Valid @RequestBody TurnosDtoR turnosdtor) throws Exception {
+		//logger.info(turnosdtor.getIdsocieda());
+		List<TurnosDto> turnoslista = turnosservice.turnosListaCita(turnosdtor.getIdsocieda());
+		return ResponseEntity.ok(turnoslista);
 	}	
+	
+	
+	
 }

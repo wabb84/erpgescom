@@ -37,4 +37,10 @@ public class TurnosServiceImpl implements TurnosService {
 	public Turnos edita(Long idconsultorio) {
 		return turnosrep.findById(idconsultorio).orElse(null);
 	}
+	
+	@Override
+	public List<TurnosDto> turnosListaCita(Long idsocieda){
+		return turnosrep.TurnosListaCita(idsocieda);
+	}
+	
 }

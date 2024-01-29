@@ -23,4 +23,11 @@ public interface TurnosRepository extends JpaRepository<Turnos, Long> {
 			+ " turnos where idsocieda = :idsocieda",nativeQuery = true)
 	
 	public List<TurnosDto> TurnosLista(@Param("idsocieda") Long idsocieda);
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select idturnos, descripcion, horainicio, horafin from \r\n"
+			+ " turnos where idsocieda = :idsocieda and vigencia = 'A'",nativeQuery = true)
+	
+	public List<TurnosDto> TurnosListaCita(@Param("idsocieda") Long idsocieda);
+
 }
