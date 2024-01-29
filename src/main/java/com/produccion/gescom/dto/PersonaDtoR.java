@@ -1,7 +1,8 @@
 package com.produccion.gescom.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 
 
 import lombok.Getter;
@@ -27,5 +28,9 @@ public class PersonaDtoR implements Serializable {
 	private Date	fecnacimiento;
 	private String	sexo;
 	private Long 	idusuario;
-
+	private String  vigencia;
+    private String 	buscarPor;
+    private String 	buscarText;
+    
+    
 }

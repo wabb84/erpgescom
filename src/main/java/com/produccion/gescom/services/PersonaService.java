@@ -9,6 +9,8 @@ public interface PersonaService {
 	
 	public Persona save( Persona persona );
 	
+	public PersonaDto consulta(Long idpersona);
+	
 	public List<PersonaDto> ListaPersona( String buscarpor, String buscartext  );
 	
 	public Persona edit( Long idpersona );

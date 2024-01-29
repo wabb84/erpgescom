@@ -1,6 +1,7 @@
 package com.produccion.gescom.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.produccion.gescom.dto.PersonaDtoR;
+import com.produccion.gescom.dto.PersonaDto;
 import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.Pais;
 import com.produccion.gescom.entity.Persona;
@@ -30,7 +33,17 @@ public class PersonaController {
 	@Autowired
 	private PersonaService personaservice;
 	
-	@PostMapping("/nuevapersona")
+	@PostMapping("/lista")
+	public ResponseEntity<?> ListaPersona(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception {
+		
+		String buscarpor = personaDtoR.getBuscarPor();
+		String buscartext = personaDtoR.getBuscarText();
+		
+		List<PersonaDto> personalista = personaservice.ListaPersona( buscarpor, buscartext );
+		return ResponseEntity.ok( personalista );
+	}
+
+	@PostMapping("/nuevo")
 	public ResponseEntity<?> NuevaPersona( @Valid @RequestBody PersonaDtoR personaDtor, BindingResult result) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		
@@ -47,6 +60,7 @@ public class PersonaController {
 		persona.setIdpais( pais );
 		persona.setTipopersona( personaDtor.getTipopersona().equals("N") ? ETipoPersona.N : ETipoPersona.J  );
 		persona.setNumerodocumento( personaDtor.getNumerodocumento() );
+		persona.setApellidopaterno( personaDtor.getApellidopaterno() );
 		persona.setApellidomaterno( personaDtor.getApellidomaterno() );
 		persona.setPrimernombre( personaDtor.getPrimernombre() );
 		persona.setSegundonombre( personaDtor.getSegundonombre() );
@@ -55,6 +69,7 @@ public class PersonaController {
 		persona.setNomabreviado( personaDtor.getNomabreviado() );
 		persona.setFecnacimiento( personaDtor.getFecnacimiento() );
 		persona.setSexo( personaDtor.getSexo() );
+		persona.setVigencia( personaDtor.getVigencia() );
 		persona.setIdusuario( personaDtor.getIdusuario() );
 		persona.setIdusuariom(0L);
 		persona.prePersist();
@@ -70,5 +85,65 @@ public class PersonaController {
 		
 	}
 	
-}
+	@PostMapping("/consulta")
+	public ResponseEntity<?> ConsultaPersona( @RequestBody PersonaDtoR personaDtoR )throws Exception {		
+		Map<String, Object> response = new HashMap<>();		
+		PersonaDto personacon = personaservice.consulta( personaDtoR.getId() ); 
+		if (personacon == null){
+			response.put("error", "No existe la Persona");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		return ResponseEntity.ok(personacon);
+	}
+	
+	@PostMapping("/actualiza")
+	public ResponseEntity<?> ActualizaPersona(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		Persona persona = personaservice.edit( personaDtoR.getId() );
+		if (persona == null){
+			response.put("error", "No existe la Persona");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			
+		}		
+		TipoDocumento tipoDocumento = new TipoDocumento();
+	    tipoDocumento.setId( personaDtoR.getTipoDocumento() );
+	    persona.setTipoDocumento( tipoDocumento );
 
+	    Socieda socieda = new Socieda();
+	    socieda.setId( personaDtoR.getIdsocieda() );
+	    persona.setIdsocieda( socieda );
+	    
+	    Pais pais = new Pais();
+	    pais.setId( personaDtoR.getIdpais() );
+	    persona.setIdpais( pais );
+	    
+	    persona.setTipopersona( personaDtoR.getTipopersona().equals("N") ? ETipoPersona.N : ETipoPersona.J  );	    
+	    persona.setNumerodocumento( personaDtoR.getNumerodocumento() );
+	    persona.setApellidopaterno( personaDtoR.getApellidopaterno() );
+	    persona.setApellidopaterno( personaDtoR.getApellidopaterno() );
+	    persona.setPrimernombre( personaDtoR.getPrimernombre() );
+	    persona.setSegundonombre( personaDtoR.getSegundonombre() );
+	    persona.setNombrelargo( personaDtoR.getNombrelargo() );
+	    persona.setRazonsocial( personaDtoR.getRazonsocial() );
+	    persona.setNomabreviado( personaDtoR.getNomabreviado() );
+	    
+	    java.sql.Date sqlDate = new java.sql.Date( personaDtoR.getFecnacimiento().getTime());
+	    
+	    persona.setFecnacimiento(sqlDate);
+	    persona.setSexo( personaDtoR.getSexo() );
+	    persona.setVigencia( personaDtoR.getVigencia() );
+	    
+		try {
+			personaservice.save( persona );
+		    response.put("mensaje", "Persona actualizada con exito");
+		} catch (Exception e) {
+		      response.put("Error", "Error al Grabar la Sociedad : " + e.getMessage());
+		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}    
+		
+		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+	    
+	}
+}

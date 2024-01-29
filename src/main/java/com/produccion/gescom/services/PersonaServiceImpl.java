@@ -24,6 +24,12 @@ public class PersonaServiceImpl implements PersonaService{
 	}
 	
 	@Override
+	public PersonaDto consulta(Long idpersona) {
+		
+		return personarep.FindByPersona( idpersona );	
+	}
+	
+	@Override
 	public List<PersonaDto> ListaPersona( String buscarpor, String buscartext  ){
 		return personarep.ListaPersona(buscarpor, buscartext);
 		
