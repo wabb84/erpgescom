@@ -4,7 +4,8 @@ import java.util.Date;
 
 public interface PersonaDto {
 
-	String	getTipoDocumento();
+	Long	getIdpersona();
+	Long	getTipoDocumento();
 	Long	getIdsocieda();
 	Long	getIdpais();
 	String	getTipopersona();
@@ -17,5 +18,6 @@ public interface PersonaDto {
 	String	getRazonsocial();
 	String	getNomabreviado();
 	Date 	getFecnacimiento();
-	Date 	getSexo();
+	String 	getSexo();
+	String	getvigencia();
 }
