@@ -67,7 +67,7 @@ public class PersonaController {
 		persona.setNombrelargo( personaDtor.getNombrelargo() );
 		persona.setRazonsocial( personaDtor.getRazonsocial() );
 		persona.setNomabreviado( personaDtor.getNomabreviado() );
-		persona.setFecnacimiento( personaDtor.getFecnacimiento() );
+		persona.setFecnacimi( personaDtor.getFecnacimiento() );
 		persona.setSexo( personaDtor.getSexo() );
 		persona.setVigencia( personaDtor.getVigencia() );
 		persona.setIdusuario( personaDtor.getIdusuario() );
@@ -127,11 +127,8 @@ public class PersonaController {
 	    persona.setSegundonombre( personaDtoR.getSegundonombre() );
 	    persona.setNombrelargo( personaDtoR.getNombrelargo() );
 	    persona.setRazonsocial( personaDtoR.getRazonsocial() );
-	    persona.setNomabreviado( personaDtoR.getNomabreviado() );
-	    
-	    java.sql.Date sqlDate = new java.sql.Date( personaDtoR.getFecnacimiento().getTime());
-	    
-	    persona.setFecnacimiento(sqlDate);
+	    persona.setNomabreviado( personaDtoR.getNomabreviado() );	    
+	    persona.setFecnacimi( personaDtoR.getFecnacimiento() );
 	    persona.setSexo( personaDtoR.getSexo() );
 	    persona.setVigencia( personaDtoR.getVigencia() );
 	    

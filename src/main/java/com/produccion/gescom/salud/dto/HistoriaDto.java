@@ -1,17 +1,19 @@
 package com.produccion.gescom.salud.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public interface HistoriaDto {
-	Long	getIdhistoria();
-	Long	getNrohistori();
-	Long    getPersona();
-	Date 	getHistfecingr();
+	Long	getIdhistoria();	
+	Long    getIdpersona();
+	LocalDate 	getHistfecingr();
 	Long	getTutor();
 	Long 	getIdpersprof();
 	Long	getIdsocieda();
-	Long 	GetIdtippacie();
-	Long 	GetIdtiphisto();
-	String 	GetSerie();
-	String  GetNumeroserie();
+	Long 	getIdtippacie();
+	Long 	getIdtiphisto();
+	String 	getSerie();
+	String  getNumeroserie();
+	String  getAnio();
+	String  getMes();
 }

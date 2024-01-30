@@ -1,9 +1,12 @@
 package com.produccion.gescom.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
-import org.springframework.format.annotation.DateTimeFormat;
+//import java.util.Date;
+//import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -65,10 +68,9 @@ public class Persona extends Auditable<String> implements Serializable{
 	@Column(name="nomabrev")
 	private String nomabreviado;
 	
+	@JsonFormat( pattern="yyyy-MM-dd" )
 	@Column(name="fecnacimi")
-	@Temporal(TemporalType.DATE)	
-	@DateTimeFormat(pattern="yyyy-MM-dd")	
-	private Date fecnacimiento;
+	private LocalDate fecnacimi;
 
 	@Column(name="sexo")
 	private String sexo;
