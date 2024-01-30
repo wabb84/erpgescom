@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.produccion.gescom.dto.PersonaDto;
+import com.produccion.gescom.dto.PersonaMultipleDto;
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.repository.PersonaRepository;
 
@@ -36,9 +37,12 @@ public class PersonaServiceImpl implements PersonaService{
 	}
 	
 	@Override
-	public Persona edit( Long idpersona ) {
-		return personarep.findById(idpersona).orElse(null);
-		
+	public List<PersonaMultipleDto> ListaPersonaMultiple( String buscartext, String buscaadi, Long vidsocieda  ){
+		return personarep.ListaPersonamultiple(buscartext, buscaadi, vidsocieda);
 	}
 	
+	@Override
+	public Persona edit( Long idpersona ) {
+		return personarep.findById(idpersona).orElse(null);
+	}
 }

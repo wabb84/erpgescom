@@ -26,7 +26,7 @@ public class PersonaDtoR implements Serializable {
 	private String	nombrelargo;
 	private String	razonsocial;
 	private String	nomabreviado;
-	private LocalDate	fecnacimiento;
+	private LocalDate fecnacimiento;
 	private String	sexo;
 	private Long 	idusuario;
 	private String  vigencia;

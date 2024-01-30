@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.dto.PersonaDto;
+import com.produccion.gescom.dto.PersonaMultipleDto;
 
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
@@ -31,6 +32,15 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 				 	+ "	 nomlargo character varying(1000), razonsocial character varying(1000), nomabrev character varying(250), \n"
 				 	+ "	 fecnacimi date, sexo character varying(1), vigencia character varying(1) )", nativeQuery = true )
 	
-	public List<PersonaDto> ListaPersona( String buscarpor, String buscartext  );	
+	public List<PersonaDto> ListaPersona( String buscarpor, String buscartext  );
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select idpersona, nomlargo, abrtipodoc,nrodoc,numeroserie\n"
+				 	+ " from busca_persona_v2( :buscartext, :buscaadi, :vidsocieda )\n"
+				 	+ " as\n"
+				 	+ " (idpersona bigint, nomlargo varchar, abrtipodoc varchar, nrodoc varchar,\r\n"
+				 	+ " numeroserie varchar)", nativeQuery = true )
+	
+	public List<PersonaMultipleDto> ListaPersonamultiple( String buscartext, String buscaadi, Long vidsocieda );	
 	
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.produccion.gescom.dto.PersonaDtoR;
+import com.produccion.gescom.dto.PersonaMultipleDto;
 import com.produccion.gescom.dto.PersonaDto;
 import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.Pais;
@@ -24,11 +27,13 @@ import com.produccion.gescom.entity.TipoDocumento;
 import com.produccion.gescom.services.PersonaService;
 
 import jakarta.validation.Valid;
-
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 @Controller
 @CrossOrigin
 @RequestMapping ("/persona")
 public class PersonaController {
+//	private static final Log logger = LogFactory.getLog(PersonaController.class);
 	
 	@Autowired
 	private PersonaService personaservice;
@@ -41,6 +46,14 @@ public class PersonaController {
 		
 		List<PersonaDto> personalista = personaservice.ListaPersona( buscarpor, buscartext );
 		return ResponseEntity.ok( personalista );
+	}
+	
+	@PostMapping("/listamultiple")
+	public ResponseEntity<?> ListaPersonaMultiple(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception {
+		
+		List<PersonaMultipleDto> personalistamultiple = personaservice.ListaPersonaMultiple(personaDtoR.getBuscarText(), personaDtoR.getBuscarPor(), personaDtoR.getIdsocieda());
+
+		return ResponseEntity.ok( personalistamultiple );
 	}
 
 	@PostMapping("/nuevo")
@@ -136,7 +149,7 @@ public class PersonaController {
 			personaservice.save( persona );
 		    response.put("mensaje", "Persona actualizada con exito");
 		} catch (Exception e) {
-		      response.put("Error", "Error al Grabar la Sociedad : " + e.getMessage());
+		      response.put("Error", "Error al Grabar la Persona : " + e.getMessage());
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}    
 		
