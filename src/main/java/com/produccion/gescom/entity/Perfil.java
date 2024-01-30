@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.FetchType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,6 +42,9 @@ public class Perfil extends Auditable<String> implements Serializable  {
 	 @Column(name="desperfil")
 	 private String desperfil;
 	 
+	 @Enumerated(EnumType.STRING)
+	 private EVigencia vigencia;
+	 
 	 @NotNull
 	 @Column(name="idsocieda")
 	 private Long idsocieda;
@@ -48,10 +52,11 @@ public class Perfil extends Auditable<String> implements Serializable  {
 	 //@OneToMany(cascade = CascadeType.ALL,mappedBy = "perfilmap")
 	 //private List<Perfildet> perfildet;
 	 
-	 @OneToMany(mappedBy = "perfilmap", cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "perfilmapdet", cascade = CascadeType.ALL)
 	 private List<Perfildet> perfildet;
 	 
-	 
-	 
+	 public void Perfil(){
+		perfildet = new ArrayList<Perfildet>();
+	 }
 }
 

@@ -52,4 +52,8 @@ public class Turnos extends Auditable<String> implements Serializable  {
 	
 	@Enumerated(EnumType.STRING)
 	private EVigencia vigencia;
+
+	@NotNull
+	@Column(name="colorback")
+	private String colorback;
 }

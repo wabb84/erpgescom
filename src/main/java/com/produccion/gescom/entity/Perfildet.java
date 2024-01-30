@@ -31,13 +31,16 @@ public class Perfildet implements Serializable{
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 @Column(name="idperfildet", unique=true, nullable=false)
-	 private Long idperfildet;
+	 private Long id;
 	 
 	 /*@Column(name="idperfil")
 	 private Long idperfil;*/
 	 
 	 @Column(name="idmenurubro")
 	 private Long idmenurubro;
+	 
+	 @Column(name="idmenu")
+	 private Long idmenu;
 	 
 	 //@Column(name="idmenu")
 	 //private Long idmenu;
@@ -49,7 +52,7 @@ public class Perfildet implements Serializable{
 	 @JsonIgnore
 	 @ManyToOne(targetEntity = Perfil.class)
 	 @JoinColumn(name="idperfil")	
-	 private Perfil perfilmap;
+	 private Perfil perfilmapdet;
 	 
 	 /*@JsonIgnore
 	 @ManyToOne(targetEntity = Menu.class)

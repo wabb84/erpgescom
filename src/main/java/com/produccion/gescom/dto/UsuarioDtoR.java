@@ -1,6 +1,7 @@
 package com.produccion.gescom.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Getter;
@@ -18,8 +19,8 @@ public class UsuarioDtoR  implements Serializable {
 	private Long idtipodoc;
 	private String numerodoc;
 	private String estadousario;
-	private Date fechaini;
-	private Date fechafinal;
+	private LocalDate fechaini;
+	private LocalDate fechafin;
 	private String serie;
 	private String estadopas;
 	private String sexo;

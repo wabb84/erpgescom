@@ -1,15 +1,12 @@
 package com.produccion.gescom.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,16 +55,16 @@ public class UserEntity extends Auditable<String> implements Serializable{
 	
 	@Enumerated(EnumType.STRING)
 	private ESexo sexo;
-	 
+	
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name="fechaini")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date fechai;
-	 
+    private LocalDate fechai;
+	
+	@JsonFormat(pattern="yyyy-MM-dd")
 	@Column(name="fechafin")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date fechaf;
+    private LocalDate fechaf;
+	
 	
 	@NotNull
 	@Column(name="idtipodoc")

@@ -103,7 +103,7 @@ public class UsuarioController {
 		usuarionew.setEstadousuario(userDtoR.getEstadousario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
 		usuarionew.setSexo(userDtoR.getSexo().equals("M") ? ESexo.M : ESexo.F);
 		usuarionew.setFechai(userDtoR.getFechaini());
-		usuarionew.setFechaf(userDtoR.getFechafinal());
+		usuarionew.setFechaf(userDtoR.getFechafin());
 		usuarionew.setIdusuario(userDtoR.getIdusuario());
 		usuarionew.setEstadopas("1");
 		usuarionew.prePersist();
@@ -115,7 +115,8 @@ public class UsuarioController {
 		      response.put("error", "Error al Grabar el Usuario : " + e.getMessage());
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}    
-		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		return ResponseEntity.ok(usuarionew);
 	}
 	
 	@PostMapping("/reinicio")
@@ -179,8 +180,9 @@ public class UsuarioController {
 		useredit.setIdtipodoc(userDtoR.getIdtipodoc());
 		useredit.setNumdocu(userDtoR.getNumerodoc());
 		useredit.setEstadousuario(userDtoR.getEstadousario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
+		
 		useredit.setFechai(userDtoR.getFechaini());
-		useredit.setFechaf(userDtoR.getFechafinal());
+		useredit.setFechaf(userDtoR.getFechafin());
 		useredit.setEstadopas(userDtoR.getEstadopas());
 		useredit.setSexo(userDtoR.getSexo().equals("M") ? ESexo.M : ESexo.F);
 		
