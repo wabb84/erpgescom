@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.produccion.gescom.salud.dto.HistoriaDto;
 import com.produccion.gescom.salud.entity.Historia;
 import com.produccion.gescom.salud.repository.HistoriaRepository;
-import com.produccion.gescom.salud.services.HistoriaService;
+//import com.produccion.gescom.salud.services.HistoriaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +26,7 @@ public class HistoriaServiceimpl implements HistoriaService {
 
 	@Override
 	public HistoriaDto consulta(Long idhistoria) {
-		// TODO Auto-generated method stub
-		return null;
+		return historiarep.findByHistoria( idhistoria );
 	}
 
 	@Override

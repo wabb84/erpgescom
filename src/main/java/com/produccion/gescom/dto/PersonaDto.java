@@ -1,6 +1,6 @@
 package com.produccion.gescom.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface PersonaDto {
 
@@ -17,7 +17,7 @@ public interface PersonaDto {
 	String	getNombrelargo();
 	String	getRazonsocial();
 	String	getNomabreviado();
-	Date 	getFecnacimiento();
+	LocalDate 	getFecnacimiento();
 	String 	getSexo();
 	String	getvigencia();
 }

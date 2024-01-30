@@ -1,6 +1,7 @@
 package com.produccion.gescom.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 //import java.sql.Date;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class PersonaDtoR implements Serializable {
 	private String	nombrelargo;
 	private String	razonsocial;
 	private String	nomabreviado;
-	private Date	fecnacimiento;
+	private LocalDate	fecnacimiento;
 	private String	sexo;
 	private Long 	idusuario;
 	private String  vigencia;
