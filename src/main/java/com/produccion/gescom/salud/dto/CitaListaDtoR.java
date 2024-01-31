@@ -1,11 +1,11 @@
-package com.produccion.gescom.dto;
+package com.produccion.gescom.salud.dto;
 
 import java.io.Serializable;
 
 import lombok.Getter;
 
 @Getter
-public class CitaDtoR implements Serializable {
+public class CitaListaDtoR implements Serializable {
 	private static final long serialVersionUID = 5926468583005150707L;
 	
 	private Long idagenda;

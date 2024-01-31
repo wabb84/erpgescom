@@ -1,4 +1,4 @@
-package com.produccion.gescom.controller;
+package com.produccion.gescom.salud.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +9,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.produccion.gescom.entity.Cita;
 import com.produccion.gescom.entity.Documento;
-import com.produccion.gescom.entity.EEstadoCita;
-import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.Seriexdoc;
-import com.produccion.gescom.services.CitasService;
+import com.produccion.gescom.salud.dto.CitaDtoR;
+import com.produccion.gescom.salud.dto.CitasListadoDto;
+import com.produccion.gescom.salud.dto.CitasListadoDtoR;
+import com.produccion.gescom.salud.entity.Cita;
+import com.produccion.gescom.salud.entity.EEstadoCita;
+import com.produccion.gescom.salud.services.CitasService;
 import com.produccion.gescom.services.DocumentoService;
 import com.produccion.gescom.services.SeriexdocService;
-
 import jakarta.validation.Valid;
-
 import com.produccion.gescom.commons.DatosFecha;
 import com.produccion.gescom.commons.DatosVarios;
-import com.produccion.gescom.dto.CitaDtoR;
 
 @Controller
 @CrossOrigin
@@ -52,7 +50,6 @@ public class CitasController {
 	private String MESACTUAL; 
 	
 	@PostMapping("/nueva")
-	//public ResponseEntity<?> NuevCita(@Valid @RequestBody ConsultorioDtoR consultorioDtoR, BindingResult result) throws Exception {
 	public ResponseEntity<?> NuevCita(@Valid @RequestBody CitaDtoR citadtor) throws Exception {
 		ANIOACTUAL = datosfecha.Obdatosfecha("A"); 
 		MESACTUAL = datosvarios.seriadoNumero(Long.parseLong(datosfecha.Obdatosfecha("M")),2L);
@@ -68,17 +65,29 @@ public class CitasController {
 		cita.setMes(MESACTUAL);
 		cita.setSerie(documento.getSerie());
 		cita.setNumeroserie(datosvarios.seriadoNumero(seriexdoc.getCorrelativo(), seriexdoc.getLongitud()));
-		
-		cita.setIdagenda(2L);
-		cita.setIdhistoria(1L);
-		
+		cita.setIdagenda(citadtor.getIdagenda());
+		//cita.setFechacita(agenda.getFechaagenda());
+		//cita.setHoracita(agenda.getHora())
+		cita.setIdhistoria(citadtor.getIdhistoria());
 		cita.setIdsocieda(citadtor.getIdsocieda());
 		cita.setEstadocita(EEstadoCita.R);
+		cita.setIdestadocita(1L);
 		cita.setIdusuario(citadtor.getIdusuario());
 		cita.setIdusuariom(0L);
 		cita.prePersist();		
 		
+		/// Hay que marcar en la Agenda que esa fecha:hora ya esta copada deberia graba el idcita en una transaccional deberia ser
+		
 		citaservice.save(cita,seriexdoc);
-		return ResponseEntity.ok(seriexdoc);
+		return ResponseEntity.ok(cita);
 	}
+	
+	@PostMapping("/listacitas")
+	public ResponseEntity<?> ListadoCita(@Valid @RequestBody CitasListadoDtoR citalistadodtor) throws Exception {
+		
+		List<CitasListadoDto> citaslista = citaservice.ListadoCitas(citalistadodtor.getFechai(), citalistadodtor.getFechaf(), citalistadodtor.getIdturno(), citalistadodtor.getIdpaciente(), citalistadodtor.getIdmedico(), citalistadodtor.getEstado());
+		
+		return ResponseEntity.ok(citaslista);
+	}
+	
 }

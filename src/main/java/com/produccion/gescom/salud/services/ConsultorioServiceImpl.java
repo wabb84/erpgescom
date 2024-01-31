@@ -1,13 +1,13 @@
-package com.produccion.gescom.services;
+package com.produccion.gescom.salud.services;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.produccion.gescom.dto.ConsultorioDto;
-import com.produccion.gescom.entity.Consultorio;
-import com.produccion.gescom.repository.ConsultorioRepository;
 
+import com.produccion.gescom.salud.dto.ConsultorioDto;
+import com.produccion.gescom.salud.entity.Consultorio;
+import com.produccion.gescom.salud.repository.ConsultorioRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;

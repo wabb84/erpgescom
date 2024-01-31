@@ -1,4 +1,4 @@
-package com.produccion.gescom.dto;
+package com.produccion.gescom.salud.dto;
 
 import java.io.Serializable;
 
@@ -16,4 +16,6 @@ public class TurnosDtoR implements Serializable {
 	private String horafin;
 	private Long intervalo;
 	private Long idusuario;
+	private String colorback;
+	private String abrevia;
 }

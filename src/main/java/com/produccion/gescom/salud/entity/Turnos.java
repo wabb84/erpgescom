@@ -1,6 +1,9 @@
-package com.produccion.gescom.entity;
+package com.produccion.gescom.salud.entity;
 
 import java.io.Serializable;
+
+import com.produccion.gescom.entity.Auditable;
+import com.produccion.gescom.entity.EVigencia;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,4 +59,10 @@ public class Turnos extends Auditable<String> implements Serializable  {
 	@NotNull
 	@Column(name="colorback")
 	private String colorback;
+	
+	@Enumerated(EnumType.STRING)
+	private EAbturno abrevia;
+	
+	
+	
 }

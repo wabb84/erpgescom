@@ -1,4 +1,4 @@
-package com.produccion.gescom.dto;
+package com.produccion.gescom.salud.dto;
 
 public interface ConsultorioDto {
 	Long getIdconsultorio();

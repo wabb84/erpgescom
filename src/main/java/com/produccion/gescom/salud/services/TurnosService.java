@@ -1,9 +1,9 @@
-package com.produccion.gescom.services;
+package com.produccion.gescom.salud.services;
 
 import java.util.List;
 
-import com.produccion.gescom.dto.TurnosDto;
-import com.produccion.gescom.entity.Turnos;
+import com.produccion.gescom.salud.dto.TurnosDto;
+import com.produccion.gescom.salud.entity.Turnos;
 
 public interface TurnosService {
 	public Turnos save(Turnos turnos);

@@ -1,4 +1,4 @@
-package com.produccion.gescom.entity;
+package com.produccion.gescom.salud.entity;
 
 //Registrada, Cancelada, Anulada, aTendida, Reprogramada
 public enum EEstadoCita {

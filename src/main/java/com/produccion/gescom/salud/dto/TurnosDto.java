@@ -1,4 +1,4 @@
-package com.produccion.gescom.dto;
+package com.produccion.gescom.salud.dto;
 
 public interface TurnosDto {
 	Long getIdturnos();
@@ -7,5 +7,6 @@ public interface TurnosDto {
 	String getHorafin();
 	Long getIntervalo();
 	String getVigencia();
-	
+	String getColorback();
+	String getAbrevia();
 }

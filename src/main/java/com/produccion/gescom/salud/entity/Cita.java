@@ -1,6 +1,10 @@
-package com.produccion.gescom.entity;
+package com.produccion.gescom.salud.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.produccion.gescom.entity.Auditable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,4 +64,18 @@ public class Cita extends Auditable<String> implements Serializable {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private EEstadoCita estadocita;
+	
+	//@NotNull
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@Column(name="fechacita")
+    private LocalDate fechacita;
+	
+	//@NotNull
+	@Column(name="horacita")
+	private String horacita;
+	
+	@NotNull
+	@Column(name="idestadocita")
+	private Long idestadocita;
+	
 }

@@ -1,4 +1,4 @@
-package com.produccion.gescom.controller;
+package com.produccion.gescom.salud.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.produccion.gescom.dto.TurnosDto;
-import com.produccion.gescom.dto.TurnosDtoR;
+
+import com.produccion.gescom.entity.EEstadoUsuario;
 import com.produccion.gescom.entity.EVigencia;
-import com.produccion.gescom.entity.Turnos;
-import com.produccion.gescom.services.TurnosService;
+import com.produccion.gescom.salud.dto.TurnosDto;
+import com.produccion.gescom.salud.dto.TurnosDtoR;
+import com.produccion.gescom.salud.entity.EAbturno;
+import com.produccion.gescom.salud.entity.Turnos;
+import com.produccion.gescom.salud.services.TurnosService;
 
 import jakarta.validation.Valid;
 
@@ -49,7 +52,8 @@ private static final Log logger = LogFactory.getLog(TurnosController.class);
 		turnosnew.setHorafin(turnosDtoR.getHorafin());
 		turnosnew.setIntervalo(turnosDtoR.getIntervalo());
 		turnosnew.setVigencia(turnosDtoR.getVigencia().equals("A") ? EVigencia.A : EVigencia.I );
-		
+		turnosnew.setColorback(turnosDtoR.getColorback());
+		turnosnew.setAbrevia(turnosDtoR.getAbrevia().equals("TM") ? EAbturno.TM : turnosDtoR.getAbrevia().equals("TN") ? EAbturno.TN :  EAbturno.TS);
 		turnosnew.setIdusuario(turnosDtoR.getIdusuario());
 		turnosnew.setIdusuariom(0L);
 		turnosnew.prePersist();
@@ -91,6 +95,8 @@ private static final Log logger = LogFactory.getLog(TurnosController.class);
 		turnos.setHorainicio(turnosDtoR.getHorainicio());
 		turnos.setHorafin(turnosDtoR.getHorafin());
 		turnos.setIntervalo(turnosDtoR.getIntervalo());
+		turnos.setColorback(turnosDtoR.getColorback());
+		turnos.setAbrevia(turnosDtoR.getAbrevia().equals("TM") ? EAbturno.TM : turnosDtoR.getAbrevia().equals("TN") ? EAbturno.TN :  EAbturno.TS);
 		turnos.setVigencia(turnosDtoR.getVigencia().equals("A") ? EVigencia.A : EVigencia.I );
 		turnos.setIdusuariom(turnosDtoR.getIdusuario());
 		

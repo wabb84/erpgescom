@@ -1,4 +1,4 @@
-package com.produccion.gescom.controller;
+package com.produccion.gescom.salud.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.produccion.gescom.dto.ConsultorioDto;
-import com.produccion.gescom.dto.ConsultorioDtoR;
-import com.produccion.gescom.entity.Consultorio;
+
 import com.produccion.gescom.entity.EVigencia;
-import com.produccion.gescom.services.ConsultorioService;
+import com.produccion.gescom.salud.dto.ConsultorioDto;
+import com.produccion.gescom.salud.dto.ConsultorioDtoR;
+import com.produccion.gescom.salud.entity.Consultorio;
+import com.produccion.gescom.salud.services.ConsultorioService;
+
 import jakarta.validation.Valid;
 
 @Controller
