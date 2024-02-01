@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.produccion.gescom.commons.DatosFecha;
 import com.produccion.gescom.commons.DatosVarios;
-
 import com.produccion.gescom.entity.Documento;
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.entity.Seriexdoc;
@@ -121,8 +119,10 @@ public class HistoriaController {
 		
 		Map<String, Object> response = new HashMap<>();
 		
-		Historia historia = historiaservice.edit( historiaDtoR.getId() );
+		Long a = historiaDtoR.getId();
 		
+		Historia historia = historiaservice.edit( historiaDtoR.getId() );
+		//Persona persona = personaservice.edit( personaDtoR.getId() );
 		if ( historia == null ){
 			response.put("error", "No existe la Historia");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
@@ -146,4 +146,3 @@ public class HistoriaController {
 		
 	}
 }
-
