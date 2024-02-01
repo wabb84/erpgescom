@@ -36,11 +36,8 @@ public class HistoriaServiceimpl implements HistoriaService {
 	}
 
 	@Override
-	public Historia edit(Long idhistoria) {
-		// TODO Auto-generated method stub
-		return null;
+	public Historia edit(Long idhistoria) {		
+		return historiarep.findById( idhistoria ).orElse(null);
 	}		
-	
-	
 	
 }

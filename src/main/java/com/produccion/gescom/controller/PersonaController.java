@@ -77,7 +77,8 @@ public class PersonaController {
 		persona.setApellidomaterno( personaDtor.getApellidomaterno() );
 		persona.setPrimernombre( personaDtor.getPrimernombre() );
 		persona.setSegundonombre( personaDtor.getSegundonombre() );
-		persona.setNombrelargo( personaDtor.getNombrelargo() );
+		String segundoNombre = persona.getSegundonombre() != null ? persona.getSegundonombre() : "";
+		persona.setNombrelargo( persona.getApellidopaterno() + " " + persona.getApellidomaterno()+ " " +persona.getPrimernombre()+ " "+ segundoNombre);
 		persona.setRazonsocial( personaDtor.getRazonsocial() );
 		persona.setNomabreviado( personaDtor.getNomabreviado() );
 		persona.setFecnacimi( personaDtor.getFecnacimiento() );
