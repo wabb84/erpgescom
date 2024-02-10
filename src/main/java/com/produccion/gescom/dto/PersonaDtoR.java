@@ -2,9 +2,6 @@ package com.produccion.gescom.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-//import java.sql.Date;
-import java.util.Date;
-
 
 import lombok.Getter;
 
