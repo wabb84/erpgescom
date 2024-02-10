@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.produccion.gescom.salud.dto.HistoriaDto;
 import com.produccion.gescom.salud.entity.Historia;
 import com.produccion.gescom.salud.repository.HistoriaRepository;
-//import com.produccion.gescom.salud.services.HistoriaService;
 
 import lombok.RequiredArgsConstructor;
 

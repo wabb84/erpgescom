@@ -119,16 +119,13 @@ public class HistoriaController {
 		
 		Map<String, Object> response = new HashMap<>();
 		
-		Long a = historiaDtoR.getId();
-		
 		Historia historia = historiaservice.edit( historiaDtoR.getId() );
-		//Persona persona = personaservice.edit( personaDtoR.getId() );
+	
 		if ( historia == null ){
 			response.put("error", "No existe la Historia");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 			
-		}
-		
+		}		
 		historia.setTutor( historiaDtoR.getTutor() );
 		historia.setIdpersprof( historiaDtoR.getIdpersprof() );
 		historia.setIdtippacie( historiaDtoR.getIdtippacie() );
