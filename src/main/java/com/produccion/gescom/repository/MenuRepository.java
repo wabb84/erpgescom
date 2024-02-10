@@ -16,13 +16,13 @@ public interface MenuRepository extends JpaRepository<Menu, Long>  {
 	List<Menu> findByIdpadreIsNull();
 	
 	@Transactional(readOnly=true)
-	@Query(value = "select e.idmenu,e.desmenu,e.tiponivel,coalesce(e.idpadre,0) as idpadre, e.icon\r\n"
+	@Query(value = "select e.idmenu,e.desmenu,e.tiponivel,coalesce(e.idpadre,0) as idpadre, e.icon, '0' as acceso\r\n"
 			+ "   from usuarioper a\r\n"
 			+ "   inner join perfil b on b.idperfil = a.idperfil\r\n"
 			+ "   inner join perfildet c on c.idperfil = b.idperfil\r\n"
 			+ "   inner join menurubro d on d.idmenurubro = c.idmenurubro\r\n"
 			+ "   inner join menu e on e.idmenu = d.idmenu\r\n"
-			+ "   where coalesce(e.estadomenu,'') = 'A' and a.idusuario = :idusuario order by e.codmenu,e.orden",nativeQuery = true)
+			+ "   where coalesce(e.estadomenu,'') = 'A' and c.acceso = '1' and a.idusuario = :idusuario order by e.codmenu,e.orden",nativeQuery = true)
 	
 	public List<MenulistaDto> menuLista(@Param("idusuario") Long idusuario);
 	

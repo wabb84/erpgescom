@@ -1,11 +1,9 @@
 package com.produccion.gescom.entity;
 
 import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
+import jakarta.persistence.FetchType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,32 +31,26 @@ public class Perfildet implements Serializable{
 	 @Column(name="idperfildet", unique=true, nullable=false)
 	 private Long id;
 	 
-	 /*@Column(name="idperfil")
-	 private Long idperfil;*/
-	 
 	 @Column(name="idmenurubro")
 	 private Long idmenurubro;
 	 
 	 @Column(name="idmenu")
 	 private Long idmenu;
 	 
-	 //@Column(name="idmenu")
-	 //private Long idmenu;
-	 
-	 /*@ManyToOne
-	 @JoinColumn(name = "idperfil", nullable = false, updatable = false)
-	 private Perfil perfilmap;*/
-	 
-	 @JsonIgnore
-	 @ManyToOne(targetEntity = Perfil.class)
-	 @JoinColumn(name="idperfil")	
-	 private Perfil perfilmapdet;
+	 @Column(name="acceso")
+	 private String acceso;
 	 
 	 /*@JsonIgnore
-	 @ManyToOne(targetEntity = Menu.class)
-	 @JoinColumn(name="idmenu")	
-	 private Menu menumap;*/
+	 @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE, targetEntity = Perfil.class)
+	 @JoinColumn(name="idperfil")	
+	 private Perfil perfilmapdet;*/
 	 
+	 
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE, targetEntity = Perfil.class)
+	@JoinColumn(name="idperfil")	
+	private Perfil perfilmapdet;		
+
 	 
 	 
 }

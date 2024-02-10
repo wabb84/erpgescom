@@ -1,16 +1,11 @@
 package com.produccion.gescom.controller;
 
-import java.awt.Menu;
-import java.util.ArrayList;
-import java.util.Date;
-//import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,9 +21,9 @@ import com.produccion.gescom.dto.ValidaMenuDtoR;
 import com.produccion.gescom.dto.ValidacionesDto;
 import com.produccion.gescom.entity.EEstadoUsuario;
 import com.produccion.gescom.entity.ESexo;
-import com.produccion.gescom.entity.ETipoPersona;
+//import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.MenuPrueba;
-import com.produccion.gescom.entity.Socieda;
+//import com.produccion.gescom.entity.Socieda;
 //import com.produccion.gescom.entity.ETipoPersona;
 //import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.entity.UserEntity;
@@ -42,7 +37,7 @@ import jakarta.validation.Valid;
 import com.produccion.gescom.dto.MenulistaDto;
 import com.produccion.gescom.dto.ReinicioPasswordDtoR;
 import com.produccion.gescom.dto.SociedaDto;
-import com.produccion.gescom.dto.SociedaDtoR;
+//import com.produccion.gescom.dto.SociedaDtoR;
 
 //import com.produccion.gescom.dto.SociedaDtoR;
 import org.apache.commons.logging.Log;
@@ -52,9 +47,6 @@ import org.apache.commons.logging.LogFactory;
 @CrossOrigin
 public class UsuarioController {
 	private static final Log logger = LogFactory.getLog(UsuarioController.class);
-	
-	//@Autowired
-	//private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private UsuarioService userservice;

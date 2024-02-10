@@ -6,4 +6,7 @@ public interface MenulistaDto {
 	String getTiponivel();
 	String getIcon();
 	Long getIdpadre();
+	String getAcceso();
+	Long getIdmenurubro();
+	Long getIdperfildet();
 }

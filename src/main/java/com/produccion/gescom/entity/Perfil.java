@@ -3,12 +3,12 @@ package com.produccion.gescom.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,10 +49,7 @@ public class Perfil extends Auditable<String> implements Serializable  {
 	 @Column(name="idsocieda")
 	 private Long idsocieda;
 	 
-	 //@OneToMany(cascade = CascadeType.ALL,mappedBy = "perfilmap")
-	 //private List<Perfildet> perfildet;
-	 
-	 @OneToMany(mappedBy = "perfilmapdet", cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "perfilmapdet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	 private List<Perfildet> perfildet;
 	 
 	 public void Perfil(){
