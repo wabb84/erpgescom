@@ -31,9 +31,9 @@ public class PersprofServiceImpl implements PersprofService{
 	}
 
 	@Override
-	public List<PersprofdatosDto> ListaPersprof() {
+	public List<PersprofdatosDto> ListaPersprof( Long idsocieda ) {
 
-		return persprofrep.ListaPersprof();
+		return persprofrep.ListaPersprof( idsocieda );
 
 	}
 

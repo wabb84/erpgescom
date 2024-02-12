@@ -12,7 +12,7 @@ public interface PersprofService {
 	
 	public PersprofDto consulta ( Long idpersprof );
 	
-	public List<PersprofdatosDto> ListaPersprof();
+	public List<PersprofdatosDto> ListaPersprof( Long idsocieda );
 	
 	public Persprof edit ( Long idpersprof );
 	

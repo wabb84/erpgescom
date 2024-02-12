@@ -31,9 +31,10 @@ public interface PersprofRepository extends JpaRepository<Persprof, Long>{
 				  + " Inner Join persona b On b.idpersona = a.idpersona \n"
 				  + " Inner Join profesion c On c.idprofesion = a.idprofesion \n"
 				  + " Where a.vigencia = 'A' \n"
-				  + "   And a.idprofesion = 1 \n"
+				  + "   And a.idprofesion = 1"
+				  + "   And a.idsocieda = :idsocieda  \n"
 				  + " Order by b.nomlargo", nativeQuery = true )
 	
-	public List<PersprofdatosDto> ListaPersprof();
+	public List<PersprofdatosDto> ListaPersprof( @Param("idsocieda") Long idsocieda );
 
 }

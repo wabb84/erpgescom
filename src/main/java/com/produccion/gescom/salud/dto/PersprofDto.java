@@ -8,5 +8,6 @@ public interface PersprofDto {
 	String	getNrocolegio();
 	String	getRne();
 	String	getVigencia();
+	Long	getIdsocieda();
 	
 }

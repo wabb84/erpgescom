@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.produccion.gescom.entity.Auditable;
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.entity.Profesion;
+import com.produccion.gescom.entity.Socieda;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,5 +53,9 @@ public class Persprof extends Auditable<String> implements Serializable{
 	@Column(name="vigencia")
 	private String vigencia;
 
+	@ManyToOne
+    @JoinColumn(name = "idsocieda")
+    private Socieda idsocieda;
 	
+
 }

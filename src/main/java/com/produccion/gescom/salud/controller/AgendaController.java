@@ -102,7 +102,7 @@ public class AgendaController {
 		AgendaDto agendacon = agendaservice.consulta( agendaDtoR.getId() );
 		
 		if (agendacon == null){
-			response.put("error", "No existe la Historia");
+			response.put("error", "No existe la Agenda");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 			
 		}
@@ -157,6 +157,5 @@ public class AgendaController {
 		
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
 		
-	}
-	
+	}	
 }
