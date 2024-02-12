@@ -2,9 +2,6 @@ package com.produccion.gescom.salud.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-//import java.util.Date;
-
-//import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

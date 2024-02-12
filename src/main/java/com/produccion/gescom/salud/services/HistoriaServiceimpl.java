@@ -1,7 +1,5 @@
 package com.produccion.gescom.salud.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,6 @@ public class HistoriaServiceimpl implements HistoriaService {
 	
 	public Historia save( Historia historia ) {
 		return historiarep.save( historia );
-		
 	}
 
 	@Override
@@ -29,14 +26,12 @@ public class HistoriaServiceimpl implements HistoriaService {
 	}
 
 	@Override
-	public List<HistoriaDto> ListaHistoria() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Historia edit(Long idhistoria) {		
 		return historiarep.findById( idhistoria ).orElse(null);
-	}		
+	}
 	
+	@Override
+	public HistoriaDto consultaHistoriaPersona( Long idpersona ){
+		return historiarep.findByHisPers( idpersona );
+	}
 }

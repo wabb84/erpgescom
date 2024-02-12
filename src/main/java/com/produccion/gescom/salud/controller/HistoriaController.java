@@ -142,4 +142,18 @@ public class HistoriaController {
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
 		
 	}
+	
+	@PostMapping("/consulta-historia-persona")
+	public ResponseEntity<?> ConsultaHistoriaPersona( @RequestBody HistoriaDtoR  historiaDtoR )throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		
+		HistoriaDto historiacon = historiaservice.consultaHistoriaPersona( historiaDtoR.getIdpersona());
+		if (historiacon == null){
+			response.put("error", "No existe la Historia");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		return ResponseEntity.ok(historiacon);
+		
+	}
+	
 }

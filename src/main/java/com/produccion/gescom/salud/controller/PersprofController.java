@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.entity.Profesion;
+import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.salud.dto.PersprofDto;
 import com.produccion.gescom.salud.dto.PersprofDtoR;
 import com.produccion.gescom.salud.dto.PersprofdatosDto;
@@ -34,7 +35,7 @@ public class PersprofController {
 	
 	@PostMapping("/lista")
 	public ResponseEntity<?> ListaPersprof(@Valid @RequestBody PersprofDtoR persprofDtoR, BindingResult result) throws Exception {
-		List<PersprofdatosDto> persproflista =  persprofservice.ListaPersprof();
+		List<PersprofdatosDto> persproflista =  persprofservice.ListaPersprof( persprofDtoR.getIdsocieda() );
 		return ResponseEntity.ok( persproflista ); 
 	}
 
@@ -52,9 +53,13 @@ public class PersprofController {
 		profesion.setId( persprofDtoR.getIdprofesion() );
 		persprof.setIdprofesion( profesion );
 		
+		Socieda socieda = new Socieda();
+		socieda.setId( persprofDtoR.getIdsocieda() );		
+		persprof.setIdsocieda( socieda );
+		
 		persprof.setNrocolegio( persprofDtoR.getNrocolegio() );
 		persprof.setRne( persprofDtoR.getRne() );
-		persprof.setVigencia("A");
+		persprof.setVigencia("A");		
 		persprof.setIdusuario( persprofDtoR.getIdusuario() );
 		persprof.setIdusuariom(0L);
 		persprof.prePersist();
