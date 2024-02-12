@@ -35,12 +35,14 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 	public List<PersonaDto> ListaPersona( String buscarpor, String buscartext  );
 	
 	@Transactional(readOnly=true)
-	@Query(value = "select idpersona, nomlargo, abrtipodoc,nrodoc,numeroserie\n"
+	@Query(value = " Select idpersona, tipoDocumento, idsocieda, idpais, tipopersona, numerodocumento, apellidopaterno, apellidomaterno,\n"
+			        + " primernombre, segundonombre, nombrelargo, razonsocial, nomabreviado, fecnacimiento, sexo, vigencia,numeroserie\n"
 				 	+ " from busca_persona_v2( :buscartext, :buscaadi, :vidsocieda )\n"
 				 	+ " as\n"
-				 	+ " (idpersona bigint, nomlargo varchar, abrtipodoc varchar, nrodoc varchar,\r\n"
-				 	+ " numeroserie varchar)", nativeQuery = true )
-	
+				 	+ " (idpersona bigint, tipoDocumento bigint, idsocieda bigint, idpais bigint, \n"
+				 	+ " tipopersona character varying(1), numerodocumento character varying(50), apellidopaterno character varying(250), \n"
+				 	+ "	apellidomaterno character varying(250), primernombre character varying(250), segundonombre character varying(250), \n"
+				 	+ "	nombrelargo character varying(1000), razonsocial character varying(1000), nomabreviado character varying(250), \n"
+				 	+ "	fecnacimiento date, sexo character varying(1), vigencia character varying(1), numeroserie character varying(15))", nativeQuery = true )
 	public List<PersonaMultipleDto> ListaPersonamultiple( String buscartext, String buscaadi, Long vidsocieda );	
-	
 }

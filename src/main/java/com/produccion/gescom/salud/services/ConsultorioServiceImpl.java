@@ -32,7 +32,7 @@ public class ConsultorioServiceImpl implements ConsultorioService {
 
 	@Override
 	public List<ConsultorioDto> consultorioLista(Long idsocieda){
-		logger.info(idsocieda);
+		//logger.info(idsocieda);
 		return consultoriorep.ConsultorioLista(idsocieda);
 	}
 	

@@ -84,7 +84,6 @@ public class ConsultorioController {
 		}
 		
 		consultorio.setDescripcion(consultorioDtoR.getDescripcion());
-		consultorio.setIdsocieda(consultorioDtoR.getIdsocieda());
 		consultorio.setVigencia(consultorioDtoR.getVigencia().equals("A") ? EVigencia.A : EVigencia.I );
 		consultorio.setIdusuariom(consultorioDtoR.getIdusuario());
 		
