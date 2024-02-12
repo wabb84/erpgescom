@@ -3,7 +3,6 @@ package com.produccion.gescom.dto;
 import java.time.LocalDate;
 
 public interface PersonaMultipleDto {
-
 	Long	getIdpersona();
 	Long	getTipoDocumento();
 	Long	getIdsocieda();
