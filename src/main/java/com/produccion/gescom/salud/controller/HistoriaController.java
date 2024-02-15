@@ -89,16 +89,21 @@ public class HistoriaController {
 		historia.setIdusuario( historiaDtor.getIdusuario() );
 		historia.setIdusuariom(0L);
 		historia.prePersist();
+		
+		HistoriaDto historiacon;
 	
 		try {
 			historiaservice.save( historia );
-		    response.put("mensaje", "Datos de historia grabada con exito");
+			
+			historiacon = historiaservice.consultaHistoriaPersona(historiaDtor.getIdpersona());
+			
+		    //response.put("mensaje", "Datos de historia grabada con exito");
 		} catch (Exception e) {
 		      response.put("error", "Error al Grabar Datos de historia : " + e.getMessage());
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}    
-		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
-		
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
+		return ResponseEntity.ok(historiacon);
 	}
 	
 	@PostMapping("/consulta")
@@ -111,49 +116,44 @@ public class HistoriaController {
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}
 		return ResponseEntity.ok(historiacon);
-		
 	}
 
 	@PostMapping("/actualiza")
 	public ResponseEntity<?> ActualizaHistoria(@Valid @RequestBody HistoriaDtoR historiaDtoR, BindingResult result) throws Exception {
 		
 		Map<String, Object> response = new HashMap<>();
-		
 		Historia historia = historiaservice.edit( historiaDtoR.getId() );
-	
 		if ( historia == null ){
 			response.put("error", "No existe la Historia");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
-			
 		}		
 		historia.setTutor( historiaDtoR.getTutor() );
 		historia.setIdpersprof( historiaDtoR.getIdpersprof() );
 		historia.setIdtippacie( historiaDtoR.getIdtippacie() );
 		historia.setIdtiphisto( historiaDtoR.getIdtiphisto() );
+		historia.setIdusuariom(historiaDtoR.getIdusuario());
 		
 		try {
 			historiaservice.save( historia );
 		    response.put("mensaje", "Historia actualizada con exito");
 		} catch (Exception e) {
-		      response.put("Error", "Error al Grabar la Historia : " + e.getMessage());
+		      response.put("error", "Error al Grabar la Historia : " + e.getMessage());
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}    
-		
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
-		
 	}
 	
 	@PostMapping("/consulta-historia-persona")
 	public ResponseEntity<?> ConsultaHistoriaPersona( @RequestBody HistoriaDtoR  historiaDtoR )throws Exception {
-		Map<String, Object> response = new HashMap<>();
+		//Map<String, Object> response = new HashMap<>();
 		
-		HistoriaDto historiacon = historiaservice.consultaHistoriaPersona( historiaDtoR.getIdpersona());
+		HistoriaDto historiacon = historiaservice.consultaHistoriaPersona(historiaDtoR.getIdpersona());
 		if (historiacon == null){
-			response.put("error", "No existe la Historia");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			//response.put("mensaje", "No existe la Historia");
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NOT_FOUND);
+			return ResponseEntity.noContent().build();
+			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe Historia Clínica");
 		}
 		return ResponseEntity.ok(historiacon);
-		
 	}
-	
 }

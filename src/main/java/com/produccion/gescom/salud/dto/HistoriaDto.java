@@ -16,4 +16,5 @@ public interface HistoriaDto {
 	String  getNumeroserie();
 	String  getAnio();
 	String  getMes();
+	String  getNombretutor();
 }

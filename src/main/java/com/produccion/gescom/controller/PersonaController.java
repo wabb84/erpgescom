@@ -93,8 +93,8 @@ public class PersonaController {
 		      response.put("error", "Error al Grabar Datos de Persona : " + e.getMessage());
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}    
-		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
-		
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
+		return ResponseEntity.ok( persona );
 	}
 	
 	@PostMapping("/consulta")
@@ -137,7 +137,8 @@ public class PersonaController {
 	    persona.setApellidopaterno( personaDtoR.getApellidopaterno() );
 	    persona.setPrimernombre( personaDtoR.getPrimernombre() );
 	    persona.setSegundonombre( personaDtoR.getSegundonombre() );
-	    persona.setNombrelargo( personaDtoR.getNombrelargo() );
+		String segundoNombre = persona.getSegundonombre() != null ? persona.getSegundonombre() : "";
+		persona.setNombrelargo( persona.getApellidopaterno() + " " + persona.getApellidomaterno()+ " " +persona.getPrimernombre()+ " "+ segundoNombre);
 	    persona.setRazonsocial( personaDtoR.getRazonsocial() );
 	    persona.setNomabreviado( personaDtoR.getNomabreviado() );	    
 	    persona.setFecnacimi( personaDtoR.getFecnacimiento() );
