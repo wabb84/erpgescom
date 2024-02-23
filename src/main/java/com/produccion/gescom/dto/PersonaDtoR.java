@@ -29,6 +29,12 @@ public class PersonaDtoR implements Serializable {
 	private String  vigencia;
     private String 	buscarPor;
     private String 	buscarText;
-    
-    
+    private Long 	tutor;
+    private String 	estadocivil;
+    private String 	lugarnacimi;
+    private String 	telefono;
+    private String 	email;
+    private String 	domicilio;
+    private String 	codubigeo;
+    private String 	observacion;
 }

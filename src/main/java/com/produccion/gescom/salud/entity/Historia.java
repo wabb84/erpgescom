@@ -14,7 +14,6 @@ import com.produccion.gescom.entity.Auditable;
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.entity.Socieda;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +36,8 @@ public class Historia extends Auditable<String> implements Serializable{
 	@Column(name="histfecingr")
 	private LocalDate histfecingr;
 	
-	@Column(name="tutor")	
-	private Long tutor;
+	/*@Column(name="tutor")	
+	private Long tutor;*/
 	
 	@Column(name="idpersprof")	
 	private Long idpersprof;
@@ -64,5 +63,14 @@ public class Historia extends Auditable<String> implements Serializable{
 
 	@Column(name="mes")
 	private String mes;
+	
+	@Column(name="alergias")
+	private String alergias;
+	
+	@Column(name="idtiposangre")
+	private Long idtiposangre;
+	
+	@Column(name="observacion")
+	private String observacion;
 	
 }

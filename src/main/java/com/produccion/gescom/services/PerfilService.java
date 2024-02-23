@@ -9,7 +9,8 @@ import com.produccion.gescom.entity.Perfildet;
 
 public interface PerfilService {
 	public List<PerfilListaDto> perfilLista(Long idsocieda);
-	public List<MenulistaDto> perfildetalleLista(Long idperfil);
+	public List<MenulistaDto> perfildetalleLista(Long idperfil, Long idsocieda);
+	public List<MenulistaDto> menulistaperfilnuevo(Long idsocieda);
 	public Perfil save(Perfil perfil);
 	public Perfil edita(Long idperfil);
 	public Perfildet editadet(Long idperfildet);

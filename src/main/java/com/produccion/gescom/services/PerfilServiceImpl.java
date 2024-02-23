@@ -31,9 +31,14 @@ public class PerfilServiceImpl implements PerfilService {
 	}
 	
 	@Override
-	public List<MenulistaDto> perfildetalleLista(Long idperfil) {
-		return perfilrep.perfildetalleLista(idperfil);
+	public List<MenulistaDto> perfildetalleLista(Long idperfil, Long idsocieda) {
+		return perfilrep.perfildetalleLista(idperfil, idsocieda);
 	}
+	
+	@Override
+	public List<MenulistaDto> menulistaperfilnuevo(Long idsocieda){
+		return perfilrep.listamenuperfilnuevo(idsocieda);
+	};
 	
 	@Override
 	public Perfil save(Perfil perfil) {

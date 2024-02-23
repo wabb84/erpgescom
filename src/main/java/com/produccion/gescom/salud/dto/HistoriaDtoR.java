@@ -22,5 +22,7 @@ public class HistoriaDtoR implements Serializable{
 	private Long	idusuario;
 	private String 	serie;
 	private String 	numeroserie;
-	
+	private String 	alergias;
+	private Long 	idtiposangre;
+	private String 	observacion;
 }

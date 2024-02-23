@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.produccion.gescom.dto.PersonaDtoR;
 import com.produccion.gescom.dto.PersonaMultipleDto;
 import com.produccion.gescom.dto.PersonaDto;
+import com.produccion.gescom.entity.EEstadoCivil;
 import com.produccion.gescom.entity.ETipoPersona;
+import com.produccion.gescom.entity.EVigencia;
 import com.produccion.gescom.entity.Pais;
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.entity.Socieda;
@@ -58,6 +59,12 @@ public class PersonaController {
 	public ResponseEntity<?> NuevaPersona( @Valid @RequestBody PersonaDtoR personaDtor, BindingResult result) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		
+		PersonaDto personabusxdoc = personaservice.consultanuevoxdoc( personaDtor.getTipoDocumento(), personaDtor.getNumerodocumento(), personaDtor.getIdsocieda() );
+		if (personabusxdoc != null){
+			response.put("error", "La Persona ya se encuentra registrada");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}	
+		
 		Persona persona = new Persona();
 		TipoDocumento tipodocumento = new TipoDocumento();
 		Socieda socieda = new Socieda();
@@ -81,7 +88,16 @@ public class PersonaController {
 		persona.setNomabreviado( personaDtor.getNomabreviado() );
 		persona.setFecnacimi( personaDtor.getFecnacimiento() );
 		persona.setSexo( personaDtor.getSexo() );
-		persona.setVigencia( personaDtor.getVigencia() );
+		persona.setVigencia(personaDtor.getVigencia().equals("A") ? EVigencia.A : EVigencia.I);
+		persona.setEstadocivil(personaDtor.getEstadocivil().equals("S") ? EEstadoCivil.S : personaDtor.getEstadocivil().equals("C") ? EEstadoCivil.C : personaDtor.getEstadocivil().equals("V") ? EEstadoCivil.V : EEstadoCivil.D);
+		persona.setLugarnacimi(personaDtor.getLugarnacimi());
+		persona.setTelefono(personaDtor.getTelefono());
+		persona.setEmail(personaDtor.getEmail());
+		persona.setDomicilio(personaDtor.getDomicilio());
+		persona.setCodubigeo(personaDtor.getCodubigeo());
+		persona.setTutor(personaDtor.getTutor());
+		persona.setObservacion(personaDtor.getObservacion());
+		
 		persona.setIdusuario( personaDtor.getIdusuario() );
 		persona.setIdusuariom(0L);
 		persona.prePersist();
@@ -116,17 +132,19 @@ public class PersonaController {
 		Persona persona = personaservice.edit( personaDtoR.getId() );
 		if (persona == null){
 			response.put("error", "No existe la Persona");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
 			
-		}		
+		}
+		
+		PersonaDto personabusxdoc = personaservice.consultaeditaxdoc( personaDtoR.getTipoDocumento(), personaDtoR.getNumerodocumento(), personaDtoR.getIdsocieda(), personaDtoR.getId());
+		if (personabusxdoc != null){
+			response.put("error", "El Tipo y Número de Documento ya se encuentra Registrado en otra Persona");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
+		}	
+		
 		TipoDocumento tipoDocumento = new TipoDocumento();
 	    tipoDocumento.setId( personaDtoR.getTipoDocumento() );
 	    persona.setTipoDocumento( tipoDocumento );
-
-	    Socieda socieda = new Socieda();
-	    socieda.setId( personaDtoR.getIdsocieda() );
-	    persona.setIdsocieda( socieda );
-	    
 	    Pais pais = new Pais();
 	    pais.setId( personaDtoR.getIdpais() );
 	    persona.setIdpais( pais );
@@ -142,8 +160,17 @@ public class PersonaController {
 	    persona.setRazonsocial( personaDtoR.getRazonsocial() );
 	    persona.setNomabreviado( personaDtoR.getNomabreviado() );	    
 	    persona.setFecnacimi( personaDtoR.getFecnacimiento() );
+		persona.setEstadocivil(personaDtoR.getEstadocivil().equals("S") ? EEstadoCivil.S : personaDtoR.getEstadocivil().equals("C") ? EEstadoCivil.C : personaDtoR.getEstadocivil().equals("V") ? EEstadoCivil.V : EEstadoCivil.D);
+		persona.setLugarnacimi(personaDtoR.getLugarnacimi());
+		persona.setTelefono(personaDtoR.getTelefono());
+		persona.setEmail(personaDtoR.getEmail());
+		persona.setDomicilio(personaDtoR.getDomicilio());
+		persona.setCodubigeo(personaDtoR.getCodubigeo());
+		persona.setTutor(personaDtoR.getTutor());
 	    persona.setSexo( personaDtoR.getSexo() );
-	    persona.setVigencia( personaDtoR.getVigencia() );
+	    persona.setObservacion(personaDtoR.getObservacion());
+	    persona.setVigencia(personaDtoR.getVigencia().equals("A") ? EVigencia.A : EVigencia.I);
+	    persona.setIdusuariom(personaDtoR.getIdusuario());
 	    
 		try {
 			personaservice.save( persona );

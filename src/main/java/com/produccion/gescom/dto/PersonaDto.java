@@ -19,5 +19,13 @@ public interface PersonaDto {
 	String	getNomabreviado();
 	LocalDate 	getFecnacimiento();
 	String 	getSexo();
-	String	getvigencia();
+	String	getVigencia();
+	String	getEstadocivil();
+	String	getLugarnacimi();
+	String	getTelefono();
+	String	getEmail();
+	String	getDomicilio();
+	String	getCodubigeo();
+	Long	getTutor();
+	String	getObservacion();
 }

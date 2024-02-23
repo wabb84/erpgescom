@@ -28,4 +28,6 @@ public class UsuarioDtoR  implements Serializable {
 	private Long idusuario;
 	private String operacion;
 	
+	private Long idperfil;
+	
 }

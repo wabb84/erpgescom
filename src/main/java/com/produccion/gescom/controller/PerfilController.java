@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.produccion.gescom.dto.MenuListaDtoR;
 import com.produccion.gescom.dto.MenulistaDto;
 import com.produccion.gescom.dto.PerfilDtoR;
-import com.produccion.gescom.dto.PerfilListaDto;
 import com.produccion.gescom.dto.UsuarioDtoR;
 import com.produccion.gescom.entity.EVigencia;
 import com.produccion.gescom.entity.Perfil;
 import com.produccion.gescom.entity.Perfildet;
 import com.produccion.gescom.services.PerfilService;
+import com.produccion.gescom.dto.PerfilListaDto;
+import com.produccion.gescom.dto.PerfilListasDto;
 
 @RestController
 @RequestMapping ("/perfil")
@@ -33,21 +34,41 @@ public class PerfilController {
 	@Autowired
 	private PerfilService perfilservice;
 	
-	@PostMapping("/lista")
-	public ResponseEntity<?> ListaPerfil(@RequestBody UsuarioDtoR userDtoR) throws Exception {
-		Map<String, Object> response = new HashMap<>();
-		List<PerfilListaDto> perfillista = perfilservice.perfilLista(userDtoR.getIdsocieda());
+	@PostMapping("/listanuevo")
+	public ResponseEntity<?> ListaPerfilnuevo(@RequestBody UsuarioDtoR userDtoR) throws Exception {
+		
+		List<MenulistaDto> menulistanuevo = perfilservice.menulistaperfilnuevo(userDtoR.getIdsocieda());
+		
+		/*List<PerfilListaDto> perfillista = perfilservice.perfilLista(userDtoR.getIdsocieda());
+		List<PerfilListasDto> perfillistafinal = new ArrayList<>();
 		
 		for(PerfilListaDto perfillistaline : perfillista) {
-			response.put("idperfil",perfillistaline.getIdperfil());
-			response.put("desperfil",perfillistaline.getDesperfil());
-			response.put("vigencia",perfillistaline.getVigencia());
-			
-			List<MenulistaDto> perfildetallelista = perfilservice.perfildetalleLista(perfillistaline.getIdperfil());
-			
-			response.put("detalleperfil",perfildetallelista);
+			PerfilListasDto perfillistadtonew = new PerfilListasDto();
+			perfillistadtonew.setIdperfil(perfillistaline.getIdperfil());
+			perfillistadtonew.setDesperfil(perfillistaline.getDesperfil());
+			perfillistadtonew.setVigencia(perfillistaline.getVigencia());
+			List<MenulistaDto> perfildetallelista = perfilservice.perfildetalleLista(perfillistaline.getIdperfil(), userDtoR.getIdsocieda());
+			perfillistadtonew.setDetalles(perfildetallelista);
+			perfillistafinal.add(perfillistadtonew);
+		}*/
+		return ResponseEntity.ok(menulistanuevo);
+	}
+	
+	@PostMapping("/lista")
+	public ResponseEntity<?> ListaPerfil(@RequestBody UsuarioDtoR userDtoR) throws Exception {
+		List<PerfilListaDto> perfillista = perfilservice.perfilLista(userDtoR.getIdsocieda());
+		List<PerfilListasDto> perfillistafinal = new ArrayList<>();
+		
+		for(PerfilListaDto perfillistaline : perfillista) {
+			PerfilListasDto perfillistadtonew = new PerfilListasDto();
+			perfillistadtonew.setIdperfil(perfillistaline.getIdperfil());
+			perfillistadtonew.setDesperfil(perfillistaline.getDesperfil());
+			perfillistadtonew.setVigencia(perfillistaline.getVigencia());
+			List<MenulistaDto> perfildetallelista = perfilservice.perfildetalleLista(perfillistaline.getIdperfil(), userDtoR.getIdsocieda());
+			perfillistadtonew.setDetalles(perfildetallelista);
+			perfillistafinal.add(perfillistadtonew);
 		}
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(perfillistafinal);
 	}
 
 	/*@PostMapping("/listadetalle")
@@ -63,6 +84,7 @@ public class PerfilController {
 		perfilnew.setDesperfil(perfildtor.getDesperfil());
 		perfilnew.setIdsocieda(perfildtor.getIdsocieda());
 		perfilnew.setVigencia(EVigencia.A);
+		perfilnew.setIdusuario(perfildtor.getIdusuario());
 		perfilnew.prePersist();
 
 		List<Perfildet> perfildetallenew = new ArrayList<>();
@@ -97,6 +119,7 @@ public class PerfilController {
 		Perfil perfiledit = perfilservice.edita(perfildtor.getIdperfil());
 		perfiledit.setDesperfil(perfildtor.getDesperfil());
 		perfiledit.setVigencia(perfildtor.getVigencia().equals("A") ? EVigencia.A : EVigencia.I);
+		perfiledit.setIdusuariom(perfildtor.getIdusuario());
 
 		List<Perfildet> perfildetallenew = new ArrayList<>();
 		List<MenuListaDtoR> menulistaperfil = perfildtor.getDetalleperfil(); 

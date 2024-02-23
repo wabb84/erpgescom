@@ -19,5 +19,12 @@ public interface PersonaMultipleDto {
 	LocalDate 	getFecnacimiento();
 	String 	getSexo();
 	String	getvigencia();
+	String	getEstadocivil();
+	String	getLugarnacimi();
+	String	getTelefono();
+	String	getEmail();
+	String	getDomicilio();
+	String	getCodubigeo();
+	String	getObservacion();
 	String	getNumeroserie();
 }

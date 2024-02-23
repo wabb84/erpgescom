@@ -15,4 +15,6 @@ public interface AgendaDto {
 	String  	getObservacion();
 	LocalDate 	getFechaagenda();
 	String  	getEstado();
+	
+	
 }

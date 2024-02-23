@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.produccion.gescom.dto.DepartamentoDto;
+import com.produccion.gescom.dto.DistritoDto;
+import com.produccion.gescom.dto.ProvinciaDto;
 import com.produccion.gescom.dto.TipoBusquedaDto;
 import com.produccion.gescom.dto.TipoBusquedaDtoR;
+import com.produccion.gescom.dto.UbigeoDtoR;
 import com.produccion.gescom.entity.Pais;
 import com.produccion.gescom.entity.Rubro;
 import com.produccion.gescom.entity.TipoDocumento;
@@ -20,6 +25,7 @@ import com.produccion.gescom.services.PaisService;
 import com.produccion.gescom.services.RubroService;
 import com.produccion.gescom.services.TipoDocumentoService;
 import com.produccion.gescom.services.TipobusquedaService;
+import com.produccion.gescom.services.UbigeoService;
 
 import jakarta.validation.Valid;
 
@@ -38,6 +44,9 @@ public class MaestroController {
 	
 	@Autowired
 	private TipobusquedaService tipodobusquedaser;
+	
+	@Autowired
+	private UbigeoService ubigeoservice;
 	
 	@PostMapping("/tipodocumento")
     public ResponseEntity<?> ListaTipoDocumento(){
@@ -66,10 +75,27 @@ public class MaestroController {
 	@PostMapping("/tipobusqueda")
     public ResponseEntity<?> ListaTipoBusqueda(@Valid @RequestBody TipoBusquedaDtoR tipobusquedaDtoR, BindingResult result){
 	    List<TipoBusquedaDto> tipobusqueda = new ArrayList<>();
-	    
-	    
 	    tipobusqueda = tipodobusquedaser.listaTipoBusqueda(tipobusquedaDtoR.getTipo());
-	    
 	    return ResponseEntity.ok(tipobusqueda);
 	}
+	
+	@PostMapping("/departamento")
+    public ResponseEntity<?> ListaDepartamento(){
+	    List<DepartamentoDto> departamento = ubigeoservice.Listadepartamentos();
+	    return ResponseEntity.ok(departamento);
+	}
+
+	@PostMapping("/provincia")
+    public ResponseEntity<?> ListaProvincia(@Valid @RequestBody UbigeoDtoR ubigeoDtoR, BindingResult result){
+	    List<ProvinciaDto> provincia = ubigeoservice.Listaprovincias(ubigeoDtoR.getIddepartamento());
+	    return ResponseEntity.ok(provincia);
+	}
+	
+	@PostMapping("/distrito")
+    public ResponseEntity<?> ListaDistrito(@Valid @RequestBody UbigeoDtoR ubigeoDtoR, BindingResult result){
+	    List<DistritoDto> distrito = ubigeoservice.Listadistritos(ubigeoDtoR.getIddepartamento(), ubigeoDtoR.getIdprovincia());
+	    return ResponseEntity.ok(distrito);
+	}
+	
+	
 }

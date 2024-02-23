@@ -7,7 +7,6 @@ public interface HistoriaDto {
 	Long	getIdhistoria();	
 	Long    getIdpersona();
 	LocalDate 	getHistfecingr();
-	Long	getTutor();
 	Long 	getIdpersprof();
 	Long	getIdsocieda();
 	Long 	getIdtippacie();
@@ -16,5 +15,7 @@ public interface HistoriaDto {
 	String  getNumeroserie();
 	String  getAnio();
 	String  getMes();
-	String  getNombretutor();
+	String  getAlergias();
+	Long 	getIdtiposangre();
+	String  getObservacion();
 }

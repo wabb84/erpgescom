@@ -4,4 +4,6 @@ public interface UsuarioListaDto {
 	Long getIdusuario();
 	String getCodusuario();
 	String getDesusuario();
+	Long getIdperfil();
+	String getDesperfil();
 }

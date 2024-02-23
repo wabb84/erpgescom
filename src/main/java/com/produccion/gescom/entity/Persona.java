@@ -74,8 +74,32 @@ public class Persona extends Auditable<String> implements Serializable{
 
 	@Column(name="sexo")
 	private String sexo;
-
-	@Column(name="vigencia")
-	private String vigencia;
 	
+	@Enumerated(EnumType.STRING)
+	private EVigencia vigencia;
+
+	@Enumerated(EnumType.STRING)
+	private EEstadoCivil estadocivil;
+	
+	@Column(name="lugarnacimi")
+	private String lugarnacimi;
+	
+	@Column(name="telefono")
+	private String telefono;
+	
+	@Column(name="email")
+	private String email;
+	
+	@Column(name="domicilio")
+	private String domicilio;
+	
+	@Column(name="observacion")
+	private String observacion;
+
+	
+	@Column(name="codubigeo")
+	private String codubigeo;
+	
+	@Column(name="tutor")
+	private Long tutor;
 }

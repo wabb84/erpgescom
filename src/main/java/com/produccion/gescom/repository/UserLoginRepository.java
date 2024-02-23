@@ -30,7 +30,11 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
 	public UsuarioDatosLoginDto FindByDatosLogin(@Param("codusuario") String codusuario);
 	
 	@Transactional(readOnly=true)
-	@Query(value = "select iduser as idusuario,codusuario,desusuario from usuario where idsocieda = :idsocieda",nativeQuery = true)
+	@Query(value = "select a.iduser as idusuario,a.codusuario,a.desusuario, b.idperfil,c.desperfil \n"
+			+ "   from usuario a \n"
+			+ "   left join usuarioper b on b.idusuario = a.iduser \n"
+			+ "   left join perfil c on c.idperfil = b.idperfil \n"
+			+ "   where a.idsocieda = :idsocieda",nativeQuery = true)
 	public List<UsuarioListaDto> usuarioLista(@Param("idsocieda") Long idsocieda);
 
 	@Transactional(readOnly=true)

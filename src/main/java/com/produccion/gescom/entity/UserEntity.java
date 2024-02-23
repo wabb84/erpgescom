@@ -2,7 +2,14 @@ package com.produccion.gescom.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
+/*import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;*/
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -81,8 +88,12 @@ public class UserEntity extends Auditable<String> implements Serializable{
 	@JoinTable(name = "usuarol", joinColumns = @JoinColumn(name = "idusuario"), inverseJoinColumns = @JoinColumn(name = "idrol"))
 	private Set<Rol> roles;
 	
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Perfil.class, cascade = CascadeType.PERSIST)
-	@JoinTable(name = "usuarioper", joinColumns = @JoinColumn(name = "idusuario"), inverseJoinColumns = @JoinColumn(name = "idperfil"))
-	private Perfil perfil;
+	//@ManyToMany(fetch = FetchType.EAGER, targetEntity = Rol.class, cascade = CascadeType.PERSIST)
+	//@JoinTable(name = "usuarioper", joinColumns = @JoinColumn(name = "idusuario"), inverseJoinColumns = @JoinColumn(name = "idperfil"))
+	//private Usuarioper usuarioper;
+	
+	/*@OneToMany(mappedBy = "userentity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Usuarioper> usuarioper;*/
+	
 	
 }

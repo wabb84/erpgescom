@@ -26,7 +26,6 @@ public class PersonaServiceImpl implements PersonaService{
 	
 	@Override
 	public PersonaDto consulta(Long idpersona) {
-		
 		return personarep.FindByPersona( idpersona );	
 	}
 	
@@ -44,5 +43,15 @@ public class PersonaServiceImpl implements PersonaService{
 	@Override
 	public Persona edit( Long idpersona ) {
 		return personarep.findById(idpersona).orElse(null);
+	}
+	
+	@Override
+	public PersonaDto consultanuevoxdoc(Long idtipodoc, String nrodoc, Long idsocieda) {
+		return personarep.FindByPersonaNuevaxDoc( idtipodoc, nrodoc, idsocieda );	
+	}
+
+	@Override
+	public PersonaDto consultaeditaxdoc(Long idtipodoc, String nrodoc, Long idsocieda, Long idpersona) {
+		return personarep.FindByPersonaEditaxDoc( idtipodoc, nrodoc, idsocieda, idpersona );	
 	}
 }

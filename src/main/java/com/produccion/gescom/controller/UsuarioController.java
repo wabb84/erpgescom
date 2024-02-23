@@ -23,15 +23,20 @@ import com.produccion.gescom.entity.EEstadoUsuario;
 import com.produccion.gescom.entity.ESexo;
 //import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.MenuPrueba;
+import com.produccion.gescom.entity.Perfil;
 //import com.produccion.gescom.entity.Socieda;
 //import com.produccion.gescom.entity.ETipoPersona;
 //import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.entity.UserEntity;
+import com.produccion.gescom.entity.Usuarioper;
 import com.produccion.gescom.repository.MenuPruebaRepository;
 import com.produccion.gescom.services.MenuService;
+import com.produccion.gescom.services.PerfilService;
 import com.produccion.gescom.services.SociedaService;
 //import com.produccion.gescom.services.UserDetailsServiceImpl;
 import com.produccion.gescom.services.UsuarioService;
+import com.produccion.gescom.services.UsuarioperService;
+
 import jakarta.validation.Valid;
 
 import com.produccion.gescom.dto.MenulistaDto;
@@ -50,6 +55,12 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioService userservice;
+	
+	@Autowired
+	private UsuarioperService usuarioperservice;
+	
+	@Autowired
+	private PerfilService perfilservice;
 	
 	@Autowired
 	private MenuService menuservice;
@@ -77,8 +88,13 @@ public class UsuarioController {
 		
 		UsuarioDatosLoginDto usuariologindatos = userservice.FindByDatosLogin(userDtoR.getCodusuario()+'@'+socieda.getSerie());
 		if (usuariologindatos != null){
-			
-			response.put("error", "Login de Usuario ya existe");
+			response.put("mensaje", "Login de Usuario ya existe");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		
+		Perfil perfil = perfilservice.edita(userDtoR.getIdperfil());
+		if (perfil == null){
+			response.put("mensaje", "Debe Seleccionar un Perfil válido");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}
 		
@@ -100,8 +116,19 @@ public class UsuarioController {
 		usuarionew.setEstadopas("1");
 		usuarionew.prePersist();
 		
+		//List<Usuarioper> usuarioperf = new ArrayList<>();
+		//Usuarioper usuarioper = new Usuarioper();
+		//usuarioper.setIdperfil(userDtoR.getIdperfil());
+		//usuarioper.setIdusuario(usuarionew.getIduser());
+		//.setIdperfil(userDtoR.getIdperfil());
+		//usuarioperf.add(usuarioper);
+		//usuarionew.setUsuarioper(usuarioperf);
 		try {
 			userservice.save(usuarionew);
+			Usuarioper usuarioper = new Usuarioper();
+			usuarioper.setIdusuario(usuarionew.getIduser());
+			usuarioper.setIdperfil(userDtoR.getIdperfil());
+			usuarioperservice.save(usuarioper);
 		    response.put("mensaje", "Usuario grabado con exito");
 		} catch (Exception e) {
 		      response.put("error", "Error al Grabar el Usuario : " + e.getMessage());
@@ -160,7 +187,7 @@ public class UsuarioController {
 	public ResponseEntity<?> ActualizaSocieda(@Valid @RequestBody UsuarioDtoR userDtoR, BindingResult result) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		
-		UserEntity useredit = userservice.edita(userDtoR.getIdusuario());
+		UserEntity useredit = userservice.edita(userDtoR.getIduser());
 		if (useredit == null){
 			response.put("error", "No existe el Usuario");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
@@ -178,8 +205,23 @@ public class UsuarioController {
 		useredit.setEstadopas(userDtoR.getEstadopas());
 		useredit.setSexo(userDtoR.getSexo().equals("M") ? ESexo.M : ESexo.F);
 		
+		useredit.setIdusuariom(userDtoR.getIdusuario());
+		
 		try {
 			userservice.save(useredit);
+			Usuarioper usuarioper = usuarioperservice.BuscaUsuarioPerfil(userDtoR.getIduser());
+			if (usuarioper == null ) {
+				Usuarioper usuariopernew = new Usuarioper();
+				usuariopernew.setIdusuario(userDtoR.getIduser());
+				usuariopernew.setIdperfil(userDtoR.getIdperfil());
+				usuarioperservice.save(usuariopernew);
+			}
+			else
+			{
+				usuarioper.setIdusuario(userDtoR.getIduser());
+				usuarioper.setIdperfil(userDtoR.getIdperfil());
+				usuarioperservice.save(usuarioper);
+			}
 		    response.put("mensaje", "Usuario grabado con exito");
 		} catch (Exception e) {
 		      response.put("Error", "Error al Grabar el Usuario : " + e.getMessage());

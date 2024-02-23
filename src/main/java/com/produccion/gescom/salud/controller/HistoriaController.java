@@ -79,13 +79,15 @@ public class HistoriaController {
 		historia.setSerie(documento.getSerie());
 		historia.setNumeroserie(datosvarios.seriadoNumero(seriexdoc.getCorrelativo(), seriexdoc.getLongitud()));		
 		historia.setHistfecingr( historiaDtor.getHistfecingr() );
-		historia.setTutor( historiaDtor.getTutor() );
 		historia.setIdpersprof( historiaDtor.getIdpersprof() );
 		Socieda socieda = new Socieda();
 		socieda.setId( historiaDtor.getIdsocieda() );		
 		historia.setIdsocieda( socieda );
-		historia.setIdtippacie( historiaDtor.getIdtippacie() );
-		historia.setIdtiphisto( historiaDtor.getIdtiphisto() );
+		historia.setIdtippacie( historiaDtor.getIdtippacie());
+		historia.setIdtiphisto( historiaDtor.getIdtiphisto());
+		historia.setAlergias(historiaDtor.getAlergias());
+		historia.setIdtiposangre(historiaDtor.getIdtiposangre());
+		historia.setObservacion(historiaDtor.getObservacion());
 		historia.setIdusuario( historiaDtor.getIdusuario() );
 		historia.setIdusuariom(0L);
 		historia.prePersist();
@@ -93,7 +95,7 @@ public class HistoriaController {
 		HistoriaDto historiacon;
 	
 		try {
-			historiaservice.save( historia );
+			historiaservice.save( historia, seriexdoc );
 			
 			historiacon = historiaservice.consultaHistoriaPersona(historiaDtor.getIdpersona());
 			
@@ -127,14 +129,16 @@ public class HistoriaController {
 			response.put("error", "No existe la Historia");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}		
-		historia.setTutor( historiaDtoR.getTutor() );
 		historia.setIdpersprof( historiaDtoR.getIdpersprof() );
 		historia.setIdtippacie( historiaDtoR.getIdtippacie() );
 		historia.setIdtiphisto( historiaDtoR.getIdtiphisto() );
+		historia.setAlergias(historiaDtoR.getAlergias());
+		historia.setIdtiposangre(historiaDtoR.getIdtiposangre());
+		historia.setObservacion(historiaDtoR.getObservacion());
 		historia.setIdusuariom(historiaDtoR.getIdusuario());
 		
 		try {
-			historiaservice.save( historia );
+			historiaservice.saveedit( historia);
 		    response.put("mensaje", "Historia actualizada con exito");
 		} catch (Exception e) {
 		      response.put("error", "Error al Grabar la Historia : " + e.getMessage());
