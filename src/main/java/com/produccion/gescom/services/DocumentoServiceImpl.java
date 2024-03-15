@@ -13,6 +13,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Autowired
     private DocumentoRepository documentorep;
 	
+	@Override
 	public Documento BuscaDocumentoAnio(Long socieda, String documento, String anio)
 	{
 		return documentorep.findByIdsociedaAndSerieAndAnio(socieda, documento, anio);

@@ -88,14 +88,22 @@ public class UsuarioController {
 		
 		UsuarioDatosLoginDto usuariologindatos = userservice.FindByDatosLogin(userDtoR.getCodusuario()+'@'+socieda.getSerie());
 		if (usuariologindatos != null){
+			//response.put("mensaje", "Login de Usuario ya existe");
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("resultado", 0);
 			response.put("mensaje", "Login de Usuario ya existe");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("dato","");
+			return ResponseEntity.ok(response);
 		}
 		
 		Perfil perfil = perfilservice.edita(userDtoR.getIdperfil());
 		if (perfil == null){
+			//response.put("mensaje", "Debe Seleccionar un Perfil válido");
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("resultado", 0);
 			response.put("mensaje", "Debe Seleccionar un Perfil válido");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("dato","");
+			return ResponseEntity.ok(response);
 		}
 		
 		UserEntity usuarionew = new UserEntity();
@@ -108,7 +116,7 @@ public class UsuarioController {
 		usuarionew.setIdsocieda(userDtoR.getIdsocieda());
 		usuarionew.setIdtipodoc(userDtoR.getIdtipodoc());
 		usuarionew.setNumdocu(userDtoR.getNumerodoc());
-		usuarionew.setEstadousuario(userDtoR.getEstadousario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
+		usuarionew.setEstadousuario(userDtoR.getEstadousuario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousuario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
 		usuarionew.setSexo(userDtoR.getSexo().equals("M") ? ESexo.M : ESexo.F);
 		usuarionew.setFechai(userDtoR.getFechaini());
 		usuarionew.setFechaf(userDtoR.getFechafin());
@@ -129,13 +137,28 @@ public class UsuarioController {
 			usuarioper.setIdusuario(usuarionew.getIduser());
 			usuarioper.setIdperfil(userDtoR.getIdperfil());
 			usuarioperservice.save(usuarioper);
-		    response.put("mensaje", "Usuario grabado con exito");
+		    //response.put("mensaje", "Usuario grabado con exito");
+		    
+			response.put("resultado", 1);
+			response.put("mensaje", "Usuario grabado con exito");
+			response.put("dato",usuarionew);
+			
 		} catch (Exception e) {
-		      response.put("error", "Error al Grabar el Usuario : " + e.getMessage());
-		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		      //response.put("error", "Error al Grabar el Usuario : " + e.getMessage());
+		      
+		      
+		      //return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		      
+		      response.put("resultado", 0);
+			  response.put("mensaje", "Error al Grabar el Usuario : " + e.getMessage());
+			  response.put("dato","");
+			  return ResponseEntity.ok(response);
+				
+		      
 		}    
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
-		return ResponseEntity.ok(usuarionew);
+		//return ResponseEntity.ok(usuarionew);
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/reinicio")
@@ -189,8 +212,22 @@ public class UsuarioController {
 		
 		UserEntity useredit = userservice.edita(userDtoR.getIduser());
 		if (useredit == null){
-			response.put("error", "No existe el Usuario");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			//response.put("error", "No existe el Usuario");
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			
+		    response.put("resultado", 0);
+			response.put("mensaje", "No existe el Usuario");
+			response.put("dato","");
+			return ResponseEntity.ok(response);
+		}
+		Perfil perfil = perfilservice.edita(userDtoR.getIdperfil());
+		if (perfil == null){
+			//response.put("mensaje", "Debe Seleccionar un Perfil válido");
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("resultado", 0); 
+			response.put("mensaje", "Debe Seleccionar un Perfil válido");
+			response.put("dato","");
+			return ResponseEntity.ok(response);
 		}
 		
 		useredit.setNombreusuario(userDtoR.getDesusuario());
@@ -198,7 +235,7 @@ public class UsuarioController {
 		useredit.setTelefono(userDtoR.getTelefono());
 		useredit.setIdtipodoc(userDtoR.getIdtipodoc());
 		useredit.setNumdocu(userDtoR.getNumerodoc());
-		useredit.setEstadousuario(userDtoR.getEstadousario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
+		useredit.setEstadousuario(userDtoR.getEstadousuario().equals("A") ? EEstadoUsuario.A : userDtoR.getEstadousuario().equals("I") ? EEstadoUsuario.I :  EEstadoUsuario.T);
 		
 		useredit.setFechai(userDtoR.getFechaini());
 		useredit.setFechaf(userDtoR.getFechafin());
@@ -222,13 +259,23 @@ public class UsuarioController {
 				usuarioper.setIdperfil(userDtoR.getIdperfil());
 				usuarioperservice.save(usuarioper);
 			}
-		    response.put("mensaje", "Usuario grabado con exito");
+		    //response.put("mensaje", "Usuario grabado con exito");
+		    response.put("resultado", 1);
+			response.put("mensaje", "Usuario grabado con exito");
+			response.put("dato",useredit);
+	
 		} catch (Exception e) {
-		      response.put("Error", "Error al Grabar el Usuario : " + e.getMessage());
-		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		      //response.put("Error", "Error al Grabar el Usuario : " + e.getMessage());
+		      //return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		      
+		      response.put("resultado", 0);
+			  response.put("mensaje", "Error al Grabar el Usuario : " + e.getMessage());
+			  response.put("dato","");
+			  return ResponseEntity.ok(response);
 		}    
 		
-		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		return ResponseEntity.ok(response);
 	}	
 	
 	

@@ -38,8 +38,8 @@ public class Cita extends Auditable<String> implements Serializable {
 	private Long idagenda;
 	
 	@NotNull
-	@Column(name="idhistoria")
-	private Long idhistoria;
+	@Column(name="idpersona")
+	private Long idpersona;
 	
 	@NotNull
 	@Column(name="idsocieda")

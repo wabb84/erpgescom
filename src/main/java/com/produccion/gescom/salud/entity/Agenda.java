@@ -71,7 +71,7 @@ public class Agenda extends Auditable<String> implements Serializable{
 	@Column(name="observacion")
 	private String observacion; 
 	
-	@Future(message = "La fecha dea agenda debe ser en el futuro")
+	//@Future(message = "La fecha dea agenda debe ser en el futuro")
 	@JsonFormat( pattern="yyyy-MM-dd" )
 	@Column(name="fechaagenda")
 	private LocalDate fechaagenda; 
@@ -80,5 +80,14 @@ public class Agenda extends Auditable<String> implements Serializable{
     @NotBlank(message = "El estado no puede estar en blanco")	
 	@Column(name="estado")
 	private String estado; 
+	
+	@Column(name="idespecialida")
+	private Long idespecialida;
+	
+	@Column(name="idconfagenda")
+	private Long idconfagenda;
+	
+	@Column(name="intervalo")
+	private Long intervalo;
 	
 }

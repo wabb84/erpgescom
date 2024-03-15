@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.produccion.gescom.dto.PersonaDto;
 import com.produccion.gescom.dto.PersonaMultipleDto;
+import com.produccion.gescom.dto.PersonamDto;
 import com.produccion.gescom.entity.Persona;
 import com.produccion.gescom.repository.PersonaRepository;
 
@@ -27,6 +28,11 @@ public class PersonaServiceImpl implements PersonaService{
 	@Override
 	public PersonaDto consulta(Long idpersona) {
 		return personarep.FindByPersona( idpersona );	
+	}
+	
+	@Override
+	public PersonamDto consultam(Long idpersona) {
+		return personarep.FindByPersonam( idpersona );	
 	}
 	
 	@Override

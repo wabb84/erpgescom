@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.produccion.gescom.dto.PersonaDtoR;
 import com.produccion.gescom.dto.PersonaMultipleDto;
+import com.produccion.gescom.dto.PersonamDto;
 import com.produccion.gescom.dto.PersonaDto;
 import com.produccion.gescom.entity.EEstadoCivil;
 import com.produccion.gescom.entity.ETipoPersona;
 import com.produccion.gescom.entity.EVigencia;
 import com.produccion.gescom.entity.Pais;
 import com.produccion.gescom.entity.Persona;
+import com.produccion.gescom.entity.Profesion;
 import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.entity.TipoDocumento;
+import com.produccion.gescom.salud.entity.Persprof;
+import com.produccion.gescom.salud.services.PersprofService;
 import com.produccion.gescom.services.PersonaService;
 
 import jakarta.validation.Valid;
@@ -36,6 +40,9 @@ public class PersonaController {
 	
 	@Autowired
 	private PersonaService personaservice;
+	
+	@Autowired
+	private PersprofService persprofservice;
 	
 	@PostMapping("/lista")
 	public ResponseEntity<?> ListaPersona(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception {
@@ -61,8 +68,15 @@ public class PersonaController {
 		
 		PersonaDto personabusxdoc = personaservice.consultanuevoxdoc( personaDtor.getTipoDocumento(), personaDtor.getNumerodocumento(), personaDtor.getIdsocieda() );
 		if (personabusxdoc != null){
-			response.put("error", "La Persona ya se encuentra registrada");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			//response.put("resultado", "La Persona ya se encuentra registrada");
+			
+			response.put("resultado", 0);
+			response.put("mensaje", "El Tipo y Número de Documento ya se encuentra registrado");
+			response.put("dato","");
+			
+			return ResponseEntity.ok(response);
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			//return new ResponseEntity<Map<String,Object>>(response , );
 		}	
 		
 		Persona persona = new Persona();
@@ -103,20 +117,65 @@ public class PersonaController {
 		persona.prePersist();
 		
 		try {
-			personaservice.save( persona );
-		    response.put("mensaje", "Datos de persona grabada con exito");
+			personaservice.save(persona);
+			
+			if (personaDtor.getTipoper().equals("ME"))
+			{
+				Persprof persprof = new Persprof();
+				persprof.setIdpersona( persona );
+				
+				Profesion profesion = new Profesion();
+				profesion.setId( 1L );
+				persprof.setIdprofesion(profesion);
+				
+				Socieda sociedapro = new Socieda();
+				sociedapro.setId( personaDtor.getIdsocieda() );		
+				persprof.setIdsocieda( sociedapro );
+				
+				persprof.setNrocolegio( personaDtor.getNrocolegio() );
+				persprof.setRne( personaDtor.getRne() );
+				persprof.setVigencia("A");		
+				persprof.setIdusuario( personaDtor.getIdusuario() );
+				persprof.setIdusuariom(0L);
+				persprof.prePersist();
+				
+				persprofservice.save( persprof );
+			}
+			
+		    response.put("mensaje",personaDtor.getTipoper().equals("PE") ? "Datos de Persona grabada con exito" : "Datos de Médico grabada con exito");
 		} catch (Exception e) {
-		      response.put("error", "Error al Grabar Datos de Persona : " + e.getMessage());
-		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
-		}    
+		      //response.put("error",personaDtor.getTipoper().equals("PE") ? "Error al Grabar Datos de Persona : " + e.getMessage() : "Error al Grabar Datos del Médico : " + e.getMessage());
+			  response.put("resultado", 0);
+			  response.put("mensaje", "personaDtor.getTipoper().equals(\"PE\") ? \"Error al Grabar Datos de Persona : \" + e.getMessage() : \"Error al Grabar Datos del Médico : \" + e.getMessage()");
+			  response.put("dato","");
+		      //return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		      return ResponseEntity.ok(response);
+		} 
+		
+		response.put("resultado", 1);
+		response.put("mensaje", "Datos de Persona grabada con exito");
+		response.put("dato",persona);
+		
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);		
-		return ResponseEntity.ok( persona );
+		//return ResponseEntity.ok( persona );
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/consulta")
 	public ResponseEntity<?> ConsultaPersona( @RequestBody PersonaDtoR personaDtoR )throws Exception {		
 		Map<String, Object> response = new HashMap<>();		
 		PersonaDto personacon = personaservice.consulta( personaDtoR.getId() ); 
+		if (personacon == null){
+			response.put("error", "No existe la Persona");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		return ResponseEntity.ok(personacon);
+	}
+	
+	@PostMapping("/consultam")
+	public ResponseEntity<?> ConsultaPersonam( @RequestBody PersonaDtoR personaDtoR )throws Exception {		
+		Map<String, Object> response = new HashMap<>();		
+		PersonamDto personacon = personaservice.consultam( personaDtoR.getId() ); 
 		if (personacon == null){
 			response.put("error", "No existe la Persona");
 			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
@@ -131,15 +190,26 @@ public class PersonaController {
 		
 		Persona persona = personaservice.edit( personaDtoR.getId() );
 		if (persona == null){
-			response.put("error", "No existe la Persona");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
+			//response.put("error", "No existe la Persona");
+			response.put("resultado", 0);
+			response.put("mensaje", "No existe la Persona");
+			response.put("dato","");
+			
+			return ResponseEntity.ok(response);
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
 			
 		}
 		
 		PersonaDto personabusxdoc = personaservice.consultaeditaxdoc( personaDtoR.getTipoDocumento(), personaDtoR.getNumerodocumento(), personaDtoR.getIdsocieda(), personaDtoR.getId());
 		if (personabusxdoc != null){
-			response.put("error", "El Tipo y Número de Documento ya se encuentra Registrado en otra Persona");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
+			//response.put("error", "El Tipo y Número de Documento ya se encuentra Registrado en otra Persona");
+
+			response.put("resultado", 0);
+			response.put("mensaje", "El Tipo y Número de Documento ya se encuentra registrado");
+			response.put("dato","");
+			
+			return ResponseEntity.ok(response);
+			//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}	
 		
 		TipoDocumento tipoDocumento = new TipoDocumento();
@@ -174,13 +244,62 @@ public class PersonaController {
 	    
 		try {
 			personaservice.save( persona );
-		    response.put("mensaje", "Persona actualizada con exito");
+			
+			if (personaDtoR.getTipoper().equals("ME"))
+			{
+				
+				Persprof persprof = persprofservice.edit(personaDtoR.getIdpersprof());
+
+				if (persprof == null){
+					Persprof persprofnew = new Persprof();
+					
+					persprofnew.setIdpersona( persona );
+					Profesion profesion = new Profesion();
+					persprofnew.setId( 1L );
+					persprofnew.setIdprofesion(profesion);
+					
+					Socieda sociedapro = new Socieda();
+					sociedapro.setId( personaDtoR.getIdsocieda() );		
+					persprofnew.setIdsocieda( sociedapro );
+					
+					persprofnew.setNrocolegio( personaDtoR.getNrocolegio() );
+					persprofnew.setRne( personaDtoR.getRne() );
+					persprofnew.setVigencia("A");		
+					persprofnew.setIdusuario( personaDtoR.getIdusuario() );
+					persprofnew.setIdusuariom(0L);
+					persprofnew.prePersist();
+					
+					persprofservice.save( persprofnew );
+				}
+				else {
+					persprof.setNrocolegio( personaDtoR.getNrocolegio() );
+					persprof.setRne( personaDtoR.getRne() );
+					persprof.setIdusuariom( personaDtoR.getIdusuario() );
+					
+					persprofservice.save( persprof );					
+				}
+			}
+		    
+			//response.put("mensaje", personaDtoR.getTipoper().equals("PE") ? "Persona actualizada con exito" : "Médico actualizado con exito");
+		    
+		    response.put("resultado", 1);
+			response.put("mensaje", personaDtoR.getTipoper().equals("PE") ? "Persona actualizada con exito" : "Médico actualizado con exito");
+			response.put("dato",persona);
+		    
+		    
 		} catch (Exception e) {
-		      response.put("Error", "Error al Grabar la Persona : " + e.getMessage());
-		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		      //response.put("Error", "Error al Grabar la Persona : " + e.getMessage());
+		      
+		      response.put("resultado", 0);
+			  response.put("mensaje", "Error al Grabar la Persona : " + e.getMessage());
+			  response.put("dato","");
+			  
+			  return ResponseEntity.ok(response);
+		      //return new ResponseEntity<Map<String,Object>>(response, HttpStatus.BAD_REQUEST);
 		}    
 		
-		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		return ResponseEntity.ok(response);
 	    
 	}
 }

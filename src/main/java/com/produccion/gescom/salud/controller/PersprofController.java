@@ -77,14 +77,27 @@ public class PersprofController {
 	}
 	
 	@PostMapping("/consulta")
+	public ResponseEntity<?> ConsultaxPersona( @RequestBody PersprofDtoR persprofDtoR )throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		
+		PersprofDto persprofcon = persprofservice.buscarxpersona(persprofDtoR.getIdpersona());
+	
+		if( persprofcon == null ) {
+			response.put("error", "No existe la Profesión de la Persona");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
+		}
+		return ResponseEntity.ok(persprofcon);		
+	}
+	
+	@PostMapping("/buscaproxpersona")
 	public ResponseEntity<?> Consulta( @RequestBody PersprofDtoR persprofDtoR )throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		
 		PersprofDto persprofcon = persprofservice.consulta( persprofDtoR.getId() );
 		
 		if( persprofcon == null ) {
-			response.put("error", "No existe la Historia");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("error", "No existe la Profesión de la Persona");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
 		}
 		return ResponseEntity.ok(persprofcon);		
 	}

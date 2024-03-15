@@ -39,8 +39,12 @@ public class PersprofServiceImpl implements PersprofService{
 
 	@Override
 	public Persprof edit(Long idpersprof) {
-		
 		return persprofrep.findById( idpersprof ).orElse( null );
+	}
+	
+	@Override
+	public PersprofDto buscarxpersona(Long idpersona) {
+		return persprofrep.findByPersprofxpersona(idpersona);
 	}
 
 }

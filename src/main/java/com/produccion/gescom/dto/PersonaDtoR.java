@@ -37,4 +37,8 @@ public class PersonaDtoR implements Serializable {
     private String 	domicilio;
     private String 	codubigeo;
     private String 	observacion;
+    private String 	tipoper;
+    private String 	nrocolegio;
+    private String 	rne;
+    private Long 	idpersprof;
 }

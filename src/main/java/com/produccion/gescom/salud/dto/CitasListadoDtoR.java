@@ -17,4 +17,5 @@ public class CitasListadoDtoR implements Serializable {
 	private Long idpaciente;
 	private Long idmedico;
 	private String estado;
+	private Long idsocieda;
 }

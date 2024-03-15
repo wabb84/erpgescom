@@ -16,4 +16,8 @@ public interface PersprofService {
 	
 	public Persprof edit ( Long idpersprof );
 	
+	public PersprofDto buscarxpersona(Long idpersona);
+	
+	//public Persprof buscaid( Long idpersprof );
+	
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.produccion.gescom.salud.dto.AgendaDto;
 import com.produccion.gescom.salud.dto.AgendaObtDto;
+import com.produccion.gescom.salud.dto.AgendamesanioDto;
 import com.produccion.gescom.salud.entity.Agenda;
 import com.produccion.gescom.salud.repository.AgendaRepository;
 
@@ -19,6 +20,7 @@ public class AgendaServiceImpl implements AgendaService{
 	@Autowired
 	private AgendaRepository agendarep;
 	
+	@Override
 	public Agenda save( Agenda agenda ){
 		return agendarep.save( agenda );
 	}
@@ -28,7 +30,7 @@ public class AgendaServiceImpl implements AgendaService{
 		return agendarep.FindByAgenda( idagenda ); 
 	}
 
-	@Override
+	/*@Override
 	@Transactional
     public Integer generarAgenda( String mes, Long idpersprof, Long dia, Long idturnos, Long idsocieda ) {       
        try {
@@ -37,7 +39,7 @@ public class AgendaServiceImpl implements AgendaService{
            e.printStackTrace();
            return null;
        }       
-    }	
+    }*/	
 
 	@Override
 	public List<AgendaObtDto> ListaAngenda( Long idsocieda, Long idpersprof, Long idturnos, String anio,  String mes ){
@@ -49,5 +51,10 @@ public class AgendaServiceImpl implements AgendaService{
 		return agendarep.findById(idagenda).orElse(null);
 		
 	}
+	
+	@Override
+	public List<AgendamesanioDto> ListaAngendaaniomes( Long idsocieda, String anio,  String mes ){
+		return agendarep.ListaAngendaaniomes(idsocieda, anio, mes);
+	};
 	
 }

@@ -18,7 +18,7 @@ public class UsuarioDtoR  implements Serializable {
 	private Long idsocieda;
 	private Long idtipodoc;
 	private String numerodoc;
-	private String estadousario;
+	private String estadousuario;
 	private LocalDate fechaini;
 	private LocalDate fechafin;
 	private String serie;

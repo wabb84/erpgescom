@@ -16,14 +16,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.produccion.gescom.commons.DatosFecha;
 import com.produccion.gescom.commons.DatosVarios;
+import com.produccion.gescom.entity.Periodo;
 import com.produccion.gescom.entity.Socieda;
 import com.produccion.gescom.salud.services.AgendaService;
+import com.produccion.gescom.salud.services.ConfagenService;
+import com.produccion.gescom.salud.services.EspecialidaService;
+import com.produccion.gescom.salud.services.PersprofService;
+import com.produccion.gescom.salud.services.TurnosService;
+import com.produccion.gescom.services.PeriodoService;
 import com.produccion.gescom.salud.dto.AgendaDto;
 import com.produccion.gescom.salud.dto.AgendaDtoR;
 import com.produccion.gescom.salud.dto.AgendaGeneraDtoR;
 import com.produccion.gescom.salud.dto.AgendaObtDto;
+import com.produccion.gescom.salud.dto.AgendamesanioDto;
+import com.produccion.gescom.salud.dto.ConfAgenDto;
 import com.produccion.gescom.salud.entity.Agenda;
+import com.produccion.gescom.salud.entity.Confagen;
 import com.produccion.gescom.salud.entity.Consultorio;
+import com.produccion.gescom.salud.entity.Especialida;
 import com.produccion.gescom.salud.entity.Turnos;
 import com.produccion.gescom.salud.entity.Persprof;
 
@@ -39,12 +49,29 @@ public class AgendaController {
 	private AgendaService agendaservice;
 	
 	@Autowired
+	private ConfagenService confagenservice;
+	
+	@Autowired
 	private DatosFecha datosfecha;
 	
 	@Autowired
 	private DatosVarios datosvarios;
 	
-
+	@Autowired
+	private EspecialidaService especialidaService;
+	
+	@Autowired
+	private PersprofService persprofService;
+	
+	@Autowired
+	private TurnosService turnosService;
+	
+	@Autowired
+	private PeriodoService periodoService;
+	
+	
+	//private final PersprofService persprofservice;
+	
 	private String ANIOACTUAL; 
 	private String MESACTUAL; 	
 	
@@ -109,17 +136,110 @@ public class AgendaController {
 		return ResponseEntity.ok( agendacon );
 		
 	}
+	
+	@PostMapping("/consultaaniomes")
+	public ResponseEntity<?> ConsultaAgendaaniomes( @RequestBody AgendaDtoR agendaDtoR )throws Exception {
+		//System.out.println("PRUEBA");
+		//System.out.println(agendaDtoR.getIdsocieda());
+		
+		Map<String, Object> response = new HashMap<>();
+		List<AgendamesanioDto> agendacon = agendaservice.ListaAngendaaniomes(agendaDtoR.getIdsocieda(), agendaDtoR.getAnio(), agendaDtoR.getMes());
+		if (agendacon == null){
+			response.put("error", "No existe la Agenda");
+			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.NO_CONTENT);
+			
+		}
+		return ResponseEntity.ok( agendacon );
+		
+	}
 
+	@PostMapping("/conflista")
+	public ResponseEntity<?> configuraAgenda(@RequestBody AgendaGeneraDtoR agendageneraDtoR) throws Exception{
+		List<ConfAgenDto> confagen = confagenservice.ListaConfAngenda(agendageneraDtoR.getAnio());
+
+	    return ResponseEntity.ok(confagen); // Assuming successful generation
+	}
+	
+	
 	@PostMapping("/generar")
-	public ResponseEntity<Integer> generarAgenda(@RequestBody AgendaGeneraDtoR agendageneraDtoR) {
-	    Integer generatedId = agendaservice.generarAgenda(
+	public ResponseEntity<?> generarAgenda(@RequestBody AgendaGeneraDtoR agendageneraDtoR) throws Exception  {
+		Map<String, Object> response = new HashMap<>();
+		Confagen confagen = new Confagen();
+		confagen.setTipo(agendageneraDtoR.getTipo());
+		confagen.setIdespecial(agendageneraDtoR.getIdespecial());
+		confagen.setIdpersprof(agendageneraDtoR.getIdpersprof());
+		confagen.setIdturno(agendageneraDtoR.getIdturno());
+		confagen.setAnio(agendageneraDtoR.getAnio());
+		confagen.setMes(agendageneraDtoR.getMes());
+		confagen.setDia(agendageneraDtoR.getDia());
+		confagen.setAniode(agendageneraDtoR.getAniode());
+		confagen.setAnohas(agendageneraDtoR.getAnohas());
+		confagen.setMesde(agendageneraDtoR.getMesde());
+		confagen.setMeshas(agendageneraDtoR.getMeshas());
+		confagen.setIdsocieda(agendageneraDtoR.getIdsocieda());
+		confagen.setIdusuario(agendageneraDtoR.getIdusuario());
+		confagen.prePersist();
+		
+		if (agendageneraDtoR.getTipo().equals("I")) {
+			Especialida especialida = especialidaService.edita( agendageneraDtoR.getIdespecial() );
+			if (especialida == null){
+				response.put("error", "No existe la Especialida");
+				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			}
+			Persprof persprof = persprofService.edit(agendageneraDtoR.getIdpersprof());
+			if (persprof == null){
+				response.put("error", "No existe el Médico");
+				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			}
+			Turnos turnos = turnosService.edita(agendageneraDtoR.getIdturno());
+			if (turnos == null){
+				response.put("error", "No existe el Turno");
+				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			}
+
+			Periodo periodo = periodoService.BuscaPeriodo(agendageneraDtoR.getAnio(), agendageneraDtoR.getMes());
+			if (periodo == null){
+				response.put("error", "No existe Periodo");
+				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			}
+		}
+		else
+		{
+			confagen.setAnio(agendageneraDtoR.getAnohas());
+			//System.out.println("Anio Inicial");
+			//System.out.println(agendageneraDtoR.getAniode());
+			//System.out.println(agendageneraDtoR.getMesde());
+			
+			Periodo periodod = periodoService.BuscaPeriodo(agendageneraDtoR.getAniode(), agendageneraDtoR.getMesde());
+			if (periodod == null){
+				response.put("error", "No existe Periodo Desde");
+				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			}
+			
+			Periodo periodoh = periodoService.BuscaPeriodo(agendageneraDtoR.getAnohas(), agendageneraDtoR.getMeshas());
+			if (periodoh == null){
+				response.put("error", "No existe Periodo Hasta");
+				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			}
+		}
+		try {
+			confagenservice.save(confagen);
+		    response.put("mensaje", "Agenda Generada con Exito");
+		} catch (Exception e) {
+			response.put("error", e.getMessage().substring(27, 43));
+		    return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		//response.put("error", "Agenda Generada");
+	    /*Integer generatedId = agendaservice.generarAgenda(
 	            agendageneraDtoR.getMes(),
 	            agendageneraDtoR.getIdpersprof(),
 	            agendageneraDtoR.getDia(),
 	            agendageneraDtoR.getIdturnos(),
-	            agendageneraDtoR.getIdsocieda());
+	            agendageneraDtoR.getIdsocieda());*/
 
-	    return ResponseEntity.ok(generatedId); // Assuming successful generation
+		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 	}
 	
 	

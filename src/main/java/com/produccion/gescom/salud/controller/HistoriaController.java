@@ -47,7 +47,7 @@ public class HistoriaController {
 	@Autowired
 	private SeriexdocService seriexdocservice;
 		
-	private String TIDO = "HI";
+	private String TIDO = "HC";
 	private String ANIO;
 	private String MES;
 	private String ANIOACTUAL; 
