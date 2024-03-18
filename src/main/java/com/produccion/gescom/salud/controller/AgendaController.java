@@ -150,7 +150,6 @@ public class AgendaController {
 			
 		}
 		return ResponseEntity.ok( agendacon );
-		
 	}
 
 	@PostMapping("/conflista")
@@ -159,7 +158,6 @@ public class AgendaController {
 
 	    return ResponseEntity.ok(confagen); // Assuming successful generation
 	}
-	
 	
 	@PostMapping("/generar")
 	public ResponseEntity<?> generarAgenda(@RequestBody AgendaGeneraDtoR agendageneraDtoR) throws Exception  {

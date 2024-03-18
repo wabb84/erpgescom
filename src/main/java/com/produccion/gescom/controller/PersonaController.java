@@ -222,7 +222,7 @@ public class PersonaController {
 	    persona.setTipopersona( personaDtoR.getTipopersona().equals("N") ? ETipoPersona.N : ETipoPersona.J  );	    
 	    persona.setNumerodocumento( personaDtoR.getNumerodocumento() );
 	    persona.setApellidopaterno( personaDtoR.getApellidopaterno() );
-	    persona.setApellidopaterno( personaDtoR.getApellidopaterno() );
+	    persona.setApellidomaterno(personaDtoR.getApellidomaterno());	    
 	    persona.setPrimernombre( personaDtoR.getPrimernombre() );
 	    persona.setSegundonombre( personaDtoR.getSegundonombre() );
 		String segundoNombre = persona.getSegundonombre() != null ? persona.getSegundonombre() : "";

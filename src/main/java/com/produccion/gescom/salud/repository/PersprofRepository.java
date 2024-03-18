@@ -24,7 +24,7 @@ public interface PersprofRepository extends JpaRepository<Persprof, Long>{
 	public PersprofDto  findByPersprof( @Param("idpersprof") Long idpersprof );
 	
 	@Transactional(readOnly=true)
-	@Query(value = "Select a.idpersprof, a.idpersona,  c.abreviatura ||' '||b.nomlargo as medico, \n"
+	@Query(value = "Select a.idpersprof, a.idpersona, case when b.sexo = 'M' then c.abreviatura else c.abreviaturaf end ||' '||b.nomlargo as medico, \n"
 				  + " d.abrtipodoc||' '||b.nrodoc as documento, c.descripcion as profesion, a.nrocolegio \n"
 				  + " From persprof a \n"
 				  + " Inner Join persona b On b.idpersona = a.idpersona \n"

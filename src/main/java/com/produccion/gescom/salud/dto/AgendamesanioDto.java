@@ -20,4 +20,6 @@ public interface AgendamesanioDto {
 	Long getIdpersona();
 	String getPersona();
 	String getTipo();
+	String getDocumento();
+	String getHistoria();
 }

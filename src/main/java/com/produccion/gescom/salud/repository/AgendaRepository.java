@@ -70,7 +70,8 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long>{
 	@Transactional(readOnly=true)
 	@Query(value = "select a.idagenda,b.descripcion as nombreturno, b.abrevia as abreviaturno ,b.colorback,e.descripcion as nomespecial, e.abrevia as abrespecial, \n"
 			+ "       a.idpersprof, d.nomlargo as nommedico, a.anio, a.mes, a.dia, a.hora, a.estado, to_char(a.fechaagenda,'dd/mm/yyyy') as fechaagenda, a.intervalo, \n"
-			+ "   f.idcita, f.idpersona, g.nomlargo as persona, case when coalesce(f.estadocita,'') = '' then '' when coalesce(f.estadocita,'') = 'C' then 'Cita' else 'Cita Adicional' end tipo  \n"
+			+ "   f.idcita, f.idpersona, g.nomlargo as persona, case when coalesce(f.estadocita,'') = '' then '' when coalesce(f.estadocita,'') = 'C' then 'Cita' else 'Cita Adicional' end tipo,  \n"
+			+ "   h.abrtipodoc||'-'||g.nrodoc as documento, i.serie||'-'||i.numeroserie as historia "
 			+ "   from agenda a \n"
 			+ "   left join turnos b on b.idturnos = a.idturnos \n"
 			+ "   left join persprof c on c.idpersprof = a.idpersprof \n"
@@ -78,6 +79,8 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long>{
 			+ "   left join especialida e on e.idespecial = a.idespecialida \n"
 			+ "   left join cita f on f.idagenda = a.idagenda and f.idestadocita in (1,2,4) \n"
 			+ "   left join persona g on g.idpersona = f.idpersona \n"
+			+ "   left join tipodoc h on h.idtipodoc = g.idtipodoc \n"
+			+ "   left join historia i on i.idpersona = g.idpersona \n"
 			+ "   where a.anio = :anio and a.mes = :mes and a.estado in ('P','C') and a.idsocieda = :idsocieda \n"
 			+ "   order by a.dia, a.hora" ,nativeQuery = true)
 	
