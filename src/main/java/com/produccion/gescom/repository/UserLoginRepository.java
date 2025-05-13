@@ -23,23 +23,23 @@ public interface UserLoginRepository extends JpaRepository<UserEntity, Long> {
 	@Transactional(readOnly=true)
 	@Query(value = "select a.iduser as idusuario, a.codusuario, a.desusuario,a.idsocieda,b.idrubro,b.nombrecome,c.idperfil, b.serie, a.sexo,\r\n"
 			+ "   a.email, a.telefono, a.estadopas\r\n"
-			+ "   from usuario a\r\n"
-			+ "   inner join socieda b on b.idsocieda = a.idsocieda\r\n"
-			+ "   left join usuarioper c on c.idusuario = a.iduser\r\n"
+			+ "   from seguridad.usuario a\r\n"
+			+ "   inner join general.socieda b on b.idsocieda = a.idsocieda\r\n"
+			+ "   left join seguridad.usuarioper c on c.idusuario = a.iduser\r\n"
 			+ "   where a.codusuario = :codusuario" ,nativeQuery = true)
 	public UsuarioDatosLoginDto FindByDatosLogin(@Param("codusuario") String codusuario);
 	
 	@Transactional(readOnly=true)
 	@Query(value = "select a.iduser as idusuario,a.codusuario,a.desusuario, b.idperfil,c.desperfil \n"
-			+ "   from usuario a \n"
-			+ "   left join usuarioper b on b.idusuario = a.iduser \n"
-			+ "   left join perfil c on c.idperfil = b.idperfil \n"
+			+ "   from seguridad.usuario a \n"
+			+ "   left join seguridad.usuarioper b on b.idusuario = a.iduser \n"
+			+ "   left join seguridad.perfil c on c.idperfil = b.idperfil \n"
 			+ "   where a.idsocieda = :idsocieda",nativeQuery = true)
 	public List<UsuarioListaDto> usuarioLista(@Param("idsocieda") Long idsocieda);
 
 	@Transactional(readOnly=true)
 	@Query(value = "select desusuario,email,telefono,idtipodoc,numerodoc,estadousuario,fechaini,fechafin,estadopas,sexo\r\n"
-			+ "	   from usuario\r\n"
+			+ "	   from seguridad.usuario\r\n"
 			+ "	   where iduser = :iduser" ,nativeQuery = true)
 	
 	public UsuarioEditaDto EditaUsuario(@Param("iduser") Long iduser);

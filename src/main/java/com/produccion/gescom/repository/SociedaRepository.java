@@ -17,16 +17,16 @@ import com.produccion.gescom.entity.Socieda;
 public interface SociedaRepository extends JpaRepository<Socieda, Long> {
 	@Transactional(readOnly=true)
 	@Query(value = "select dessocieda as sociedanombre, tipopersona,idtipodoc,numerodoc as numerodocumento,idrubro,idpais,nombrecome as nombrecomercial,serie,estadosocieda\r\n"
-			+ "   from socieda\r\n"
+			+ "   from general.socieda\r\n"
 			+ "   where idsocieda = :idsocieda" ,nativeQuery = true)
 	
 	public SociedaDto FindBySocieda(@Param("idsocieda") Long idsocieda);
 	
 	@Transactional(readOnly=true)
 	@Query(value = "select idsocieda,dessocieda,serie,estadosocieda from (\r\n"
-			+ "select idsocieda,dessocieda,serie,estadosocieda,'0' as tipo from socieda where idsocieda = 1\r\n"
+			+ "select idsocieda,dessocieda,serie,estadosocieda,'0' as tipo from general.socieda where idsocieda = 1\r\n"
 			+ " union all \r\n"
-			+ " select idsocieda,dessocieda,serie,estadosocieda,'1' as tipo from socieda where idsocieda <> 1) \r\n"
+			+ " select idsocieda,dessocieda,serie,estadosocieda,'1' as tipo from general.socieda where idsocieda <> 1) \r\n"
 			+ " as uno order by tipo,dessocieda",nativeQuery = true)
 	
 	public List<SociedaListaDto> sociedaLista();

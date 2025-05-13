@@ -26,6 +26,9 @@ public interface PersonaDto {
 	String	getEmail();
 	String	getDomicilio();
 	String	getCodubigeo();
-	Long	getTutor();
 	String	getObservacion();
+	String	getTipoparentutor();
+	Long	getIdtipodoctutor();
+	String	getApellnombtutor();
+	String  getNumerodoctutor();
 }

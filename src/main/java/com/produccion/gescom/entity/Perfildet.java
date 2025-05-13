@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="perfildet")
+@Table(name="perfildet", schema="seguridad")
 public class Perfildet implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -30,27 +30,11 @@ public class Perfildet implements Serializable{
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 @Column(name="idperfildet", unique=true, nullable=false)
 	 private Long id;
-	 
-	 @Column(name="idmenurubro")
 	 private Long idmenurubro;
-	 
-	 @Column(name="idmenu")
 	 private Long idmenu;
-	 
-	 @Column(name="acceso")
 	 private String acceso;
-	 
-	 /*@JsonIgnore
-	 @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE, targetEntity = Perfil.class)
-	 @JoinColumn(name="idperfil")	
-	 private Perfil perfilmapdet;*/
-	 
-	 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE, targetEntity = Perfil.class)
 	@JoinColumn(name="idperfil")	
 	private Perfil perfilmapdet;		
-
-	 
-	 
 }

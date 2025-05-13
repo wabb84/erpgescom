@@ -30,7 +30,7 @@ public class FeriadosController {
 	
 	@PostMapping("/lista")
     public ResponseEntity<?> ListaFeriados(@Valid @RequestBody SociedaFiltroDtoR sociedaDtoR, BindingResult result){
-		List<FeriadosDto> feriadoslista =  feriadosservice.listaferiados(sociedaDtoR.getIdsocieda());
+		List<FeriadosDto> feriadoslista =  feriadosservice.listaferiados(sociedaDtoR.getAnio(),sociedaDtoR.getIdsocieda());
 		
 	    return ResponseEntity.ok(feriadoslista);
 	}

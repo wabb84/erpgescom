@@ -1,5 +1,7 @@
 package com.produccion.gescom.salud.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,7 +156,7 @@ public class AgendaController {
 
 	@PostMapping("/conflista")
 	public ResponseEntity<?> configuraAgenda(@RequestBody AgendaGeneraDtoR agendageneraDtoR) throws Exception{
-		List<ConfAgenDto> confagen = confagenservice.ListaConfAngenda(agendageneraDtoR.getAnio());
+		List<ConfAgenDto> confagen = confagenservice.ListaConfAngenda(agendageneraDtoR.getAnio(), agendageneraDtoR.getIdsocieda());
 
 	    return ResponseEntity.ok(confagen); // Assuming successful generation
 	}
@@ -173,6 +175,14 @@ public class AgendaController {
 		confagen.setAniode(agendageneraDtoR.getAniode());
 		confagen.setAnohas(agendageneraDtoR.getAnohas());
 		confagen.setMesde(agendageneraDtoR.getMesde());
+		if (agendageneraDtoR.getTipo().equals("B")) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate fechai = LocalDate.parse(agendageneraDtoR.getFechai(), formatter);
+			LocalDate fechaf = LocalDate.parse(agendageneraDtoR.getFechaf(), formatter);
+			//System.out.println(fechai.toString());
+			confagen.setFechai(fechai);
+			confagen.setFechaf(fechaf);
+		}
 		confagen.setMeshas(agendageneraDtoR.getMeshas());
 		confagen.setIdsocieda(agendageneraDtoR.getIdsocieda());
 		confagen.setIdusuario(agendageneraDtoR.getIdusuario());
@@ -181,27 +191,36 @@ public class AgendaController {
 		if (agendageneraDtoR.getTipo().equals("I")) {
 			Especialida especialida = especialidaService.edita( agendageneraDtoR.getIdespecial() );
 			if (especialida == null){
-				response.put("error", "No existe la Especialida");
-				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+				
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe la Especialida");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
 			}
 			Persprof persprof = persprofService.edit(agendageneraDtoR.getIdpersprof());
 			if (persprof == null){
-				response.put("error", "No existe el Médico");
-				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe el Médico");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
 			}
 			Turnos turnos = turnosService.edita(agendageneraDtoR.getIdturno());
 			if (turnos == null){
-				response.put("error", "No existe el Turno");
-				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe el Turno");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
 			}
 
 			Periodo periodo = periodoService.BuscaPeriodo(agendageneraDtoR.getAnio(), agendageneraDtoR.getMes());
 			if (periodo == null){
-				response.put("error", "No existe Periodo");
-				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe Periodo");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
 			}
 		}
-		else
+		else if (agendageneraDtoR.getTipo().equals("T"))
 		{
 			confagen.setAnio(agendageneraDtoR.getAnohas());
 			//System.out.println("Anio Inicial");
@@ -210,24 +229,91 @@ public class AgendaController {
 			
 			Periodo periodod = periodoService.BuscaPeriodo(agendageneraDtoR.getAniode(), agendageneraDtoR.getMesde());
 			if (periodod == null){
-				response.put("error", "No existe Periodo Desde");
-				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe Periodo Desde");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
 			}
 			
 			Periodo periodoh = periodoService.BuscaPeriodo(agendageneraDtoR.getAnohas(), agendageneraDtoR.getMeshas());
 			if (periodoh == null){
-				response.put("error", "No existe Periodo Hasta");
-				return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe Periodo Hasta");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
+			}
+		}
+		else if (agendageneraDtoR.getTipo().equals("B"))
+		{
+			Persprof persprof = persprofService.edit(agendageneraDtoR.getIdpersprof());
+			if (persprof == null){
+				response.put("resultado", 0);
+				response.put("mensaje", "No existe el Médico");
+				response.put("dato","");
+				return ResponseEntity.ok(response);
+			}
+			
+			if (agendageneraDtoR.getIdturno() == 0) {
+				ConfAgenDto confblo = confagenservice.VerificaBloqueo(agendageneraDtoR.getFechai(), agendageneraDtoR.getFechaf(), agendageneraDtoR.getIdpersprof(), agendageneraDtoR.getIdsocieda());
+				if (confblo.getCantidad() > 0 )
+				{
+					response.put("resultado", 0);
+					response.put("mensaje", "Debe Anular o Reprogramar Citas antes de Bloquear Agenda");
+					response.put("dato","");
+					return ResponseEntity.ok(response);
+				}
+				
+				ConfAgenDto confbus = confagenservice.BuscaAgenB(agendageneraDtoR.getFechai(), agendageneraDtoR.getFechaf(), agendageneraDtoR.getIdpersprof(), agendageneraDtoR.getIdsocieda());
+				if (confbus.getCantidad() == 0 )
+				{
+					response.put("resultado", 0);
+					response.put("mensaje", "No existen Datos de Agenda para bloqueo");
+					response.put("dato","");
+					return ResponseEntity.ok(response);
+				}
+				
+			}
+			else {
+				ConfAgenDto confblo = confagenservice.VerificaBloqueoT(agendageneraDtoR.getFechai(), agendageneraDtoR.getFechaf(), agendageneraDtoR.getIdpersprof(), agendageneraDtoR.getIdturno(), agendageneraDtoR.getIdsocieda());
+				if (confblo.getCantidad() > 0 )
+				{
+					response.put("resultado", 0);
+					response.put("mensaje", "Debe Anular o Reprogramar Citas antes de Bloquear Agenda");
+					response.put("dato","");
+					return ResponseEntity.ok(response);
+				}
+				
+				ConfAgenDto confbus = confagenservice.BuscaAgenBT(agendageneraDtoR.getFechai(), agendageneraDtoR.getFechaf(), agendageneraDtoR.getIdpersprof(), agendageneraDtoR.getIdturno(), agendageneraDtoR.getIdsocieda());
+				if (confbus.getCantidad() == 0 )
+				{
+					response.put("resultado", 0);
+					response.put("mensaje", "Debe Anular o Reprogramar Citas antes de Bloquear Agenda");
+					response.put("dato","");
+					return ResponseEntity.ok(response);
+				}
+				
 			}
 		}
 		try {
 			confagenservice.save(confagen);
-		    response.put("mensaje", "Agenda Generada con Exito");
+			response.put("resultado", 1);
+			if (agendageneraDtoR.getTipo().equals("I")){
+				response.put("mensaje", "Agenda Generada con Exito");	
+			}
+			else if (agendageneraDtoR.getTipo().equals("T")){
+				response.put("mensaje", "Traslado de Agenda Generada con Exito");
+			}
+			if (agendageneraDtoR.getTipo().equals("B")){
+				response.put("mensaje", "Bloqueo de Agenda Generada con Exito");
+			}
+			response.put("dato",confagen);
 		} catch (Exception e) {
-			response.put("error", e.getMessage().substring(27, 43));
-		    return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+			response.put("resultado", 0);
+			//response.put("mensaje", e.getMessage().substring(27, 43));
+			response.put("mensaje", e.getMessage());
+			response.put("dato","");
+			return ResponseEntity.ok(response);
 		}
-		
 		
 		//response.put("error", "Agenda Generada");
 	    /*Integer generatedId = agendaservice.generarAgenda(
@@ -237,7 +323,8 @@ public class AgendaController {
 	            agendageneraDtoR.getIdturnos(),
 	            agendageneraDtoR.getIdsocieda());*/
 
-		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		return ResponseEntity.ok(response);
 	}
 	
 	

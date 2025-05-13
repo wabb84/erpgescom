@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -87,6 +88,7 @@ public class Persona extends Auditable<String> implements Serializable{
 	@Column(name="telefono")
 	private String telefono;
 	
+	@Email(message = "Correo electrónico no válido")
 	@Column(name="email")
 	private String email;
 	
@@ -96,10 +98,22 @@ public class Persona extends Auditable<String> implements Serializable{
 	@Column(name="observacion")
 	private String observacion;
 
-	
 	@Column(name="codubigeo")
 	private String codubigeo;
 	
-	@Column(name="tutor")
-	private Long tutor;
+	/*@Column(name="tutor")
+	private Long tutor;*/
+	
+	//@Column(name="tipoparentutor")
+	@Enumerated(EnumType.STRING)
+	private ETipotutor tipoparentutor;
+
+	@Column(name="idtipodoctutor")
+	private Long idtipodoctutor;
+
+	@Column(name="apellnombtutor")
+	private String apellnombtutor;
+	
+	@Column(name="numerodoctutor")
+	private String numerodoctutor;
 }

@@ -20,13 +20,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.produccion.gescom.security.filters.JwtAuthenticationFilter;
 import com.produccion.gescom.security.filters.JwtAuthorizationFilter;
-//import com.produccion.gescom.security.filters.JwtAuthenticationFilter;
-//import com.produccion.gescom.security.filters.JwtAuthorizationFilter;
 import com.produccion.gescom.security.jwt.JwtUtils;
-//import com.produccion.gescom.services.UserDetailsServiceImpl;
-import com.produccion.gescom.services.UserDetailsServiceImpl;
-
-
+import com.produccion.gescom.services.impl.UserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)

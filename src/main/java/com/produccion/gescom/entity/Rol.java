@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="rol")
+@Table(name="rol", schema="seguridad")
 public class Rol implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

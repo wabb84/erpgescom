@@ -18,7 +18,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
 	@Transactional(readOnly=true)
 	@Query(value = "Select idpersona, idtipodoc as tipoDocumento, idsocieda, idpais, tipopersona, nrodoc as numerodocumento, appaterno as apellidopaterno, appmaterno as apellidomaterno, primernom as primernombre, segundonom as segundonombre, nomlargo as nombrelargo, razonsocial, nomabrev as nomabreviado, fecnacimi as fecnacimiento, sexo, vigencia, \n"
-			    + "   estadocivil, lugarnacimi, telefono, email, domicilio, codubigeo, tutor, observacion \n"  
+			    + "   estadocivil, lugarnacimi, telefono, email, domicilio, codubigeo, observacion, tipoparentutor, idtipodoctutor, apellnombtutor, numerodoctutor \n"  
 				+ "   from persona \n"
 				+ "   where idpersona = :idpersona" ,nativeQuery = true)
 	
@@ -50,7 +50,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 	@Transactional(readOnly=true)
 	@Query(value = " Select idpersona, tipoDocumento, idsocieda, idpais, tipopersona, numerodocumento, apellidopaterno, apellidomaterno,\n"
 			        + " primernombre, segundonombre, nombrelargo, razonsocial, nomabreviado, fecnacimiento, sexo, vigencia, \n"
-			        + " estadocivil,lugarnacimi,telefono,email,domicilio,codubigeo,tutor,observacion,numeroserie, nombretutor, idpersprof \n"
+			        + " estadocivil,lugarnacimi,telefono,email,domicilio,codubigeo,tutor,observacion,numeroserie, nombretutor, idpersprof, \n"
+			        + " tipoparentutor, idtipodoctutor, numerodoctutor \n"
 				 	+ " from busca_persona_v2( :buscartext, :buscaadi, :vidsocieda )\n"
 				 	+ " as\n"
 				 	+ " (idpersona bigint, tipoDocumento bigint, idsocieda bigint, idpais bigint, \n"
@@ -59,7 +60,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 				 	+ "	nombrelargo character varying(1000), razonsocial character varying(1000), nomabreviado character varying(250), \n"
 				 	+ "	fecnacimiento date, sexo character varying(1), vigencia character varying(1), \n"
 				 	+ " estadocivil varchar(1), lugarnacimi varchar(150), telefono varchar(150),email varchar(150),domicilio varchar(150),\r\n"
-				 	+ " codubigeo varchar(6),tutor bigint, observacion varchar(1000), numeroserie character varying(15), nombretutor character varying(1000), idpersprof bigint)", nativeQuery = true )
+				 	+ " codubigeo varchar(6),tutor bigint, observacion varchar(1000), numeroserie character varying(15), nombretutor character varying(250),"
+				 	+ " idpersprof bigint, tipoparentutor varchar(1), idtipodoctutor bigint, numerodoctutor varchar(25) )", nativeQuery = true )
 	public List<PersonaMultipleDto> ListaPersonamultiple( String buscartext, String buscaadi, Long vidsocieda );
 	
 	@Transactional(readOnly=true)

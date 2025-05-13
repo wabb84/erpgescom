@@ -1,6 +1,9 @@
 package com.produccion.gescom.salud.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.produccion.gescom.entity.Auditable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,5 +63,13 @@ public class Confagen extends Auditable<String> implements Serializable {
 	private String mesde; 
 
 	@Column(name="meshas")
-	private String meshas; 
+	private String meshas;
+	
+	@JsonFormat( pattern="yyyy-MM-dd" )
+	@Column(name="fechai")
+	private LocalDate fechai;
+	
+	@JsonFormat( pattern="yyyy-MM-dd" )
+	@Column(name="fechaf")
+	private LocalDate fechaf;
 }

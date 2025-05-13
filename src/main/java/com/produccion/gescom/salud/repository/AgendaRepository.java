@@ -22,8 +22,13 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long>{
 	public Integer generarAgendaI(String tipo, Long medico, Long especial, Long turno, String anio, String mes,Long dia,Long idsocieda,Long idconfagen, Long idusuario);
 	
 	@Transactional
-		@Query(value = "SELECT f_copiar_agenda_mes(:anioi, :mesi, :aniof, :mesf, :idsocieda, :idusuario, :idconfagen) as resultado", nativeQuery = true )
+	@Query(value = "SELECT f_copiar_agenda_mes(:anioi, :mesi, :aniof, :mesf, :idsocieda, :idusuario, :idconfagen) as resultado", nativeQuery = true )
 	public Integer generarAgendaM(String anioi, String mesi, String aniof, String mesf, Long idsocieda, Long idusuario, Long idconfagen);
+	
+	@Transactional
+	@Query(value = "SELECT f_bloqueo_agenda(:fechai, :fechaf, :idpersprof, :idturno, :idsocieda, :idusuario) as resultado", nativeQuery = true )
+	public Integer generarAgendaB(String fechai, String fechaf, Long idpersprof, Long idturno, Long idsocieda, Long idusuario);
+	
 
 	//@Transactional
 	//@Query(value = "SELECT f_generar_agenda(:tipo, :medico, :especial, :turno, :anio, :mes, :dia, :idsocieda, :idconfagen, :idusuario) as resultado", nativeQuery = true )
@@ -67,7 +72,7 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long>{
 										 	@Param("idturnos") Long idturnos, @Param("anio") String anio,
 										 	@Param("mes") String mes );
 
-	@Transactional(readOnly=true)
+	/*@Transactional(readOnly=true)
 	@Query(value = "select a.idagenda,b.descripcion as nombreturno, b.abrevia as abreviaturno ,b.colorback,e.descripcion as nomespecial, e.abrevia as abrespecial, \n"
 			+ "       a.idpersprof, d.nomlargo as nommedico, a.anio, a.mes, a.dia, a.hora, a.estado, to_char(a.fechaagenda,'dd/mm/yyyy') as fechaagenda, a.intervalo, \n"
 			+ "   f.idcita, f.idpersona, g.nomlargo as persona, case when coalesce(f.estadocita,'') = '' then '' when coalesce(f.estadocita,'') = 'C' then 'Cita' else 'Cita Adicional' end tipo,  \n"
@@ -81,12 +86,22 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long>{
 			+ "   left join persona g on g.idpersona = f.idpersona \n"
 			+ "   left join tipodoc h on h.idtipodoc = g.idtipodoc \n"
 			+ "   left join historia i on i.idpersona = g.idpersona \n"
-			+ "   where a.anio = :anio and a.mes = :mes and a.estado in ('P','C') and a.idsocieda = :idsocieda \n"
+			+ "   where a.anio = :anio and a.mes = :mes and a.estado in ('P','C','B') and a.idsocieda = :idsocieda \n"
 			+ "   order by a.dia, a.hora" ,nativeQuery = true)
 	
+	public List<AgendamesanioDto> ListaAngendaaniomes(Long idsocieda, String anio,String mes );*/
+	
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select idagenda,nombreturno, abreviaturno, colorback, nomespecial, abrespecial, idpersprof, nommedico,\r\n"
+			+ "       anio, mes, dia, hora, estado, fechaagenda, intervalo, idcita, idpersona, persona, tipo,  \r\n"
+			+ "	   documento, historia \r\n"
+			+ "   from f_lista_agendaaniomes(:anio,:mes, :idsocieda) as\r\n"
+			+ "       (idagenda bigint, nombreturno varchar, abreviaturno varchar, colorback varchar, nomespecial varchar,\r\n"
+			+ "		abrespecial varchar, idpersprof bigint, nommedico varchar,anio varchar, mes varchar, dia varchar,\r\n"
+			+ "		hora varchar, estado varchar, fechaagenda text, intervalo bigint, idcita bigint, idpersona bigint, \r\n"
+			+ "		persona varchar, tipo text, documento text, historia  text)" ,nativeQuery = true)
+	
 	public List<AgendamesanioDto> ListaAngendaaniomes(Long idsocieda, String anio,String mes );
-	
-	
-	
 	
 }

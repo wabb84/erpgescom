@@ -18,7 +18,35 @@ public interface ConfagenRepository extends JpaRepository<Confagen, Long> {
 		   + "left join especialida c on c.idespecial = a.idespecial \n"
 		   + "left join persprof d on d.idpersprof = a.idpersprof \n"
 		   + "left join persona e on e.idpersona = d.idpersona \n"
-		   + "where a.anio = :anio ",nativeQuery = true)
+		   + "where a.anio = :anio and a.idsocieda = :idsocieda ",nativeQuery = true)
 	
-	public List<ConfAgenDto> ListadoConfAgens(String anio);
+	public List<ConfAgenDto> ListadoConfAgens(String anio, Long idsocieda);
+
+	@Transactional(readOnly=true)
+	@Query(value = "select count(*) as cantidad from agenda where idpersprof = :idpersprof and fechaagenda between to_date(:pfechai,'dd/mm/yyyy') and to_date(:pfechaf,'dd/mm/yyyy') \n"
+			+ "and idsocieda = :idsocieda and estado <> 'P' ",nativeQuery = true)
+	
+	public ConfAgenDto BloqueoConfAgen(String pfechai, String pfechaf, Long idpersprof, Long idsocieda);
+	
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select count(*) as cantidad from agenda where idpersprof = :idpersprof and fechaagenda between to_date(:pfechai,'dd/mm/yyyy') and to_date(:pfechaf,'dd/mm/yyyy') \n"
+			+ "and idturnos = :idTurnos and idsocieda = :idsocieda and estado <> 'P' ",nativeQuery = true)
+	
+	public ConfAgenDto BloqueoConfAgenT(String pfechai, String pfechaf, Long idpersprof, Long idTurnos, Long idsocieda);
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select count(*) as cantidad from agenda where idpersprof = :idpersprof and fechaagenda between to_date(:pfechai,'dd/mm/yyyy') and to_date(:pfechaf,'dd/mm/yyyy') \n"
+			+ "and idsocieda = :idsocieda ",nativeQuery = true)
+	
+	public ConfAgenDto BuscaAgenB(String pfechai, String pfechaf, Long idpersprof, Long idsocieda);
+	
+	
+	@Transactional(readOnly=true)
+	@Query(value = "select count(*) as cantidad from agenda where idpersprof = :idpersprof and fechaagenda between to_date(:pfechai,'dd/mm/yyyy') and to_date(:pfechaf,'dd/mm/yyyy') \n"
+			+ "and idturnos = :idTurnos and idsocieda = :idsocieda pero",nativeQuery = true)
+	
+	public ConfAgenDto BuscaAgenBT(String pfechai, String pfechaf, Long idpersprof, Long idTurnos, Long idsocieda);
+
+	
 }

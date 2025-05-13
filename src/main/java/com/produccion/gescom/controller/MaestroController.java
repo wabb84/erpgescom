@@ -1,7 +1,9 @@
 package com.produccion.gescom.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.produccion.gescom.commons.DatosFecha;
+import com.produccion.gescom.commons.DatosVarios;
+import com.produccion.gescom.dto.DatosFechaDtoR;
 import com.produccion.gescom.dto.DepartamentoDto;
 import com.produccion.gescom.dto.DistritoDto;
 import com.produccion.gescom.dto.ProvinciaDto;
@@ -47,6 +52,9 @@ public class MaestroController {
 	
 	@Autowired
 	private UbigeoService ubigeoservice;
+	
+	@Autowired
+	private DatosFecha datosfecha;
 	
 	@PostMapping("/tipodocumento")
     public ResponseEntity<?> ListaTipoDocumento(){
@@ -95,6 +103,14 @@ public class MaestroController {
     public ResponseEntity<?> ListaDistrito(@Valid @RequestBody UbigeoDtoR ubigeoDtoR, BindingResult result){
 	    List<DistritoDto> distrito = ubigeoservice.Listadistritos(ubigeoDtoR.getIddepartamento(), ubigeoDtoR.getIdprovincia());
 	    return ResponseEntity.ok(distrito);
+	}
+	
+	@PostMapping("/datosfecha")
+	public ResponseEntity<?> DatosFecha(@Valid @RequestBody DatosFechaDtoR Datosfecha, BindingResult result){
+		Map<String, Object> response = new HashMap<>();
+		response.put("datosfecha", datosfecha.Obdatosfecha(Datosfecha.getTipo()));
+		
+		return ResponseEntity.ok(response);
 	}
 	
 	

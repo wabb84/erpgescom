@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="socieda")
+@Table(name="socieda", schema="general")
 public class Socieda extends Auditable<String> implements Serializable {
 	 private static final long serialVersionUID = 1L;
 	

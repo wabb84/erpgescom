@@ -1,88 +1,128 @@
 package com.produccion.gescom.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+//import java.util.Arrays;
+//import java.util.HashMap;
+//import java.util.Map;
+//import java.util.List;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.produccion.gescom.dto.UsuarioDatosLoginDto;
-import com.produccion.gescom.dto.UsuarioDtoR;
-import com.produccion.gescom.dto.UsuarioEditaDto;
-import com.produccion.gescom.dto.UsuarioListaDto;
-import com.produccion.gescom.dto.ValidaMenuDtoR;
-import com.produccion.gescom.dto.ValidacionesDto;
-import com.produccion.gescom.entity.EEstadoUsuario;
-import com.produccion.gescom.entity.ESexo;
+//import com.produccion.gescom.dto.UsuarioDatosLoginDto;
+import com.produccion.gescom.dto.UsuarioDtoReq;
+//import com.produccion.gescom.dto.UsuarioEditaDto;
+//import com.produccion.gescom.dto.ValidaMenuDtoR;
+//import com.produccion.gescom.dto.ValidacionesDto;
+//import com.produccion.gescom.entity.EEstadoUsuario;
+//import com.produccion.gescom.entity.ESexo;
 //import com.produccion.gescom.entity.ETipoPersona;
-import com.produccion.gescom.entity.MenuPrueba;
-import com.produccion.gescom.entity.Perfil;
+//import com.produccion.gescom.entity.MenuPrueba;
+//import com.produccion.gescom.entity.Perfil;
 //import com.produccion.gescom.entity.Socieda;
 //import com.produccion.gescom.entity.ETipoPersona;
 //import com.produccion.gescom.entity.Socieda;
-import com.produccion.gescom.entity.UserEntity;
-import com.produccion.gescom.entity.Usuarioper;
-import com.produccion.gescom.repository.MenuPruebaRepository;
+//import com.produccion.gescom.entity.UserEntity;
+//import com.produccion.gescom.entity.Usuarioper;
+//import com.produccion.gescom.exceptions.MensajeResponse;
+//import com.produccion.gescom.repository.MenuPruebaRepository;
+//import com.produccion.gescom.repository.UserLoginRepository;
 import com.produccion.gescom.services.MenuService;
-import com.produccion.gescom.services.PerfilService;
-import com.produccion.gescom.services.SociedaService;
+//import com.produccion.gescom.services.PerfilService;
+//import com.produccion.gescom.services.SociedaService;
 //import com.produccion.gescom.services.UserDetailsServiceImpl;
 import com.produccion.gescom.services.UsuarioService;
-import com.produccion.gescom.services.UsuarioperService;
-
+//import com.produccion.gescom.services.UsuarioperService;
 import jakarta.validation.Valid;
-
-import com.produccion.gescom.dto.MenulistaDto;
+import lombok.RequiredArgsConstructor;
+//import com.produccion.gescom.dto.MenulistaDto;
 import com.produccion.gescom.dto.ReinicioPasswordDtoR;
-import com.produccion.gescom.dto.SociedaDto;
+//import com.produccion.gescom.dto.SociedaDto;
 //import com.produccion.gescom.dto.SociedaDtoR;
-
 //import com.produccion.gescom.dto.SociedaDtoR;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+import com.produccion.gescom.commons.DatosVarios;
 @RestController
 @RequestMapping ("/usuario")
 @CrossOrigin
+@RequiredArgsConstructor
 public class UsuarioController {
-	private static final Log logger = LogFactory.getLog(UsuarioController.class);
+	//private static final Log logger = LogFactory.getLog(UsuarioController.class);
 	
-	@Autowired
-	private UsuarioService userservice;
+	private final UsuarioService userservice;
+	//private final UsuarioperService usuarioperservice;
+	//private final PerfilService perfilservice;
+	private final MenuService menuservice;
+	//private final MenuPruebaRepository menuprueba;
+	//private final SociedaService sociedaservice;
+	//private final PasswordEncoder passwordEncoder;
+	private final DatosVarios datosvarios;
 	
-	@Autowired
-	private UsuarioperService usuarioperservice;
-	
-	@Autowired
-	private PerfilService perfilservice;
-	
-	@Autowired
-	private MenuService menuservice;
-	
-	@Autowired
-	private MenuPruebaRepository menuprueba;
-	
-	@Autowired
-	private SociedaService sociedaservice;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@PostMapping("/lista")
-	public ResponseEntity<?> ListaUsuario(@RequestBody UsuarioDtoR userDtoR) throws Exception {
-		List<UsuarioListaDto> usuariolista = userservice.ListaUsuarios(userDtoR.getIdsocieda());
-		return ResponseEntity.ok(usuariolista);
+	@PostMapping("/datos")
+	public ResponseEntity<?> consultaUsuarioLogin2(@RequestBody UsuarioDtoReq userDtoR) throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(userservice.findByDatosLogin(userDtoR.getCodusuario()),"Datos Login"));
 	}
 	
 	@PostMapping("/nuevo")
-	public ResponseEntity<?> NuevaSocieda(@Valid @RequestBody UsuarioDtoR userDtoR, BindingResult result) throws Exception {
-		Map<String, Object> response = new HashMap<>();
+	public ResponseEntity<?> nuevoUsuario(@Valid @RequestBody UsuarioDtoReq userDtoR, BindingResult result) throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(userservice.nuevo(userDtoR),"Nuevo Usuario grabado correctamente"));
+	}
+	
+	@PostMapping("/actualiza")
+	public ResponseEntity<?> actualizaUsuario(@Valid @RequestBody UsuarioDtoReq userDtoR, BindingResult result) throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(userservice.edita(userDtoR),"Datos Usuario actualizado correctamente"));
+	}
+	
+	@PostMapping("/menu")
+	public ResponseEntity<?> listaMenu()  throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(menuservice.menulista(),"Menu x Usuario"));
+	}
+	
+	@PostMapping("/reinicio")
+	public ResponseEntity<?> reinicioPassword(@Valid @RequestBody ReinicioPasswordDtoR reiniciodtor) throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(userservice.reinicioPassword(reiniciodtor),"Password reiniciado correctamente"));
+	}
+	
+	@PostMapping("/lista")
+	public ResponseEntity<?> listaUsuario(@RequestBody UsuarioDtoReq userDtoR) throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(userservice.listaUsuarios(userDtoR.getIdsocieda()),"Listado Usuarios por Sociedad"));
+	}
+	
+	@PostMapping("/consulta")
+	public ResponseEntity<?> ConsultaUsuario(@RequestBody UsuarioDtoReq userDtoR) throws Exception {
+		return ResponseEntity.ok(datosvarios.mensajeDev(userservice.consulta(userDtoR.getIduser()),"Edita Datos Usuario"));
+		
+		//Map<String, Object> response = new HashMap<>();
+		//UsuarioEditaDto usuarioedita = userservice.consulta(userDtoR.getIdusuario());
+		//if (usuarioedita == null){
+		//	response.put("error", "No existe el Usuario");
+		//	return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
+		//}
+		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
+		//return ResponseEntity.ok(usuarioedita);
+	}	
+	
+	
+	
+	
+	/*@PostMapping("/lista")
+	public ResponseEntity<?> listaUsuario(@RequestBody UsuarioDtoReq userDtoR) throws Exception {
+		return ResponseEntity.ok(userservice.listaUsuarios(userDtoR.getIdsocieda()));
+	}*/
+	
+	/*@PostMapping("/nuevo")
+	public ResponseEntity<?> nuevoUsuario(@Valid @RequestBody UsuarioDtoReq userDtoR, BindingResult result) throws Exception {
+		//System.out.println(userDtoR.getCodusuario());
+		return ResponseEntity.ok(userservice.nuevo(userDtoR));
+		
+		
+		/*Map<String, Object> response = new HashMap<>();
 		String encriptPassword = "";
 		SociedaDto socieda = sociedaservice.consulta(userDtoR.getIdsocieda());
 		
@@ -158,10 +198,10 @@ public class UsuarioController {
 		}    
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 		//return ResponseEntity.ok(usuarionew);
-		return ResponseEntity.ok(response);
-	}
+		return ResponseEntity.ok(response);*/
+	//}*/
 	
-	@PostMapping("/reinicio")
+	/*@PostMapping("/reinicio")
 	public ResponseEntity<?> reinicioPassword(@RequestBody ReinicioPasswordDtoR reinicioDtoR) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		UserEntity user = userservice.edita(reinicioDtoR.getIdusuario());
@@ -192,9 +232,9 @@ public class UsuarioController {
 		      return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		}   
 		return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
-	}
+	}*/
 	
-	@PostMapping("/consulta")
+	/*@PostMapping("/consulta")
 	public ResponseEntity<?> ConsultaUsuario(@RequestBody UsuarioDtoR userDtoR) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioEditaDto usuarioedita = userservice.consulta(userDtoR.getIdusuario());
@@ -204,9 +244,9 @@ public class UsuarioController {
 		}
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 		return ResponseEntity.ok(usuarioedita);
-	}	
+	}*/	
 	
-	@PostMapping("/actualiza")
+	/*@PostMapping("/actualiza")
 	public ResponseEntity<?> ActualizaSocieda(@Valid @RequestBody UsuarioDtoR userDtoR, BindingResult result) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		
@@ -277,21 +317,11 @@ public class UsuarioController {
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 		return ResponseEntity.ok(response);
 	}	
+	*/
 	
 	
-	@PostMapping("/datos")
-	public ResponseEntity<?> ConsultaUsuarioLogin(@RequestBody UsuarioDtoR userDtoR) throws Exception {
-		Map<String, Object> response = new HashMap<>();
-		UsuarioDatosLoginDto usuariologindatos = userservice.FindByDatosLogin(userDtoR.getCodusuario());
-		if (usuariologindatos == null){
-			response.put("error", "No existe Usuario");
-			return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
-		}
-		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
-		return ResponseEntity.ok(usuariologindatos);
-	}
 	
-	@PostMapping("/menu")
+	/*@PostMapping("/menu")
 	public ResponseEntity<?> ListaMenu(@RequestBody UsuarioDtoR userDtoR)  throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		List<MenulistaDto> menulista = menuservice.menulista(userDtoR.getIdusuario());
@@ -302,24 +332,25 @@ public class UsuarioController {
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 		return ResponseEntity.ok(menulista);
 	}
+	*/
 	
-	@PostMapping("/menutemporal")
+	/*@PostMapping("/menutemporal")
 	public ResponseEntity<?> ListaMenuFinal(@RequestBody UsuarioDtoR userDtoR) throws Exception {
-		List<com.produccion.gescom.entity.Menu> menulistatemporal = menuservice.menulistatemporal(userDtoR.getIdusuario());
+		List<com.produccion.gescom.entity.Menu> menulistatemporal = menuservice.menulistatemporal(userDtoR.getIdusuario());*/
 				
 		/*List<MenuPrueba> menus = roles.stream()
 				.flatMap(role -> role.getMenus().stream())
                 .distinct()
                 .collect(Collectors.toList());*/
 		
-		//List<MenuPrueba> menulistaprueba = menuprueba.menuLista(4L);
+		/*//List<MenuPrueba> menulistaprueba = menuprueba.menuLista(4L);
 		
 		//List<MenulistaDto> menulistaprueba = menuprueba.menuListaFinal(1L);
 
 		return ResponseEntity.ok(menulistatemporal);
-	}
+	}*/
 	
-	@PostMapping("/validamenutemporal")
+	/*@PostMapping("/validamenutemporal")
 	public ResponseEntity<?> ValidaMenu(@RequestBody ValidaMenuDtoR validamenuR) throws Exception {
 		Map<String, Object> response = new HashMap<>();
 		//logger.info(validamenuR.getIdusuario());
@@ -332,10 +363,10 @@ public class UsuarioController {
 		
 		response.put("mensaje", "Acceso Permitido");
 		return ResponseEntity.ok(response);
-	}
+	}*/
 	
 	
-	@PostMapping("/menuv1")
+	/*@PostMapping("/menuv1")
 	public ResponseEntity<?> ListaMenuv1()  throws Exception {
 		//Map<String, Object> response = new HashMap<>();
 		List<com.produccion.gescom.entity.Menu> menulista = menuservice.menulistafinal();
@@ -345,13 +376,13 @@ public class UsuarioController {
 		//}
 		//return new ResponseEntity<Map<String,Object>>(response , HttpStatus.OK);
 		return ResponseEntity.ok(menulista);
-	}
+	}*/
 	
 	
-	@PostMapping("/menuprueba")
+	/*@PostMapping("/menuprueba")
 	public ResponseEntity<?> ListaMenuPrueba() throws Exception {
 
-		List<MenuPrueba> menulistaprueba = menuprueba.findByParentidIsNull();
+		List<MenuPrueba> menulistaprueba = menuprueba.findByParentidIsNull();*/
 		
 		//List<MenuPrueba> listamenu= new ArrayList<MenuPrueba>();
 		
@@ -364,12 +395,12 @@ public class UsuarioController {
 		
 		//List<MenuPrueba> menulistaprueba = menuprueba.menuLista();
 
-		return ResponseEntity.ok(menulistaprueba);
-	}
+		/*return ResponseEntity.ok(menulistaprueba);
+	}*/
 	
-	@PostMapping("/menuprueba1")
+	/*@PostMapping("/menuprueba1")
 	public ResponseEntity<?> ListaMenuFinal() throws Exception {
-		List<MenuPrueba> menulistaprueba2 = menuprueba.menuListaFinal();
+		List<MenuPrueba> menulistaprueba2 = menuprueba.menuListaFinal();*/
 				
 		/*List<MenuPrueba> menus = roles.stream()
 				.flatMap(role -> role.getMenus().stream())
@@ -380,12 +411,12 @@ public class UsuarioController {
 		
 		//List<MenulistaDto> menulistaprueba = menuprueba.menuListaFinal(1L);
 
-		return ResponseEntity.ok(menulistaprueba2);
-	}
+		/*return ResponseEntity.ok(menulistaprueba2);
+	}*/
 	
 	
 	
-	@PostMapping("/menuprueba2")
+	/*@PostMapping("/menuprueba2")
 	public ResponseEntity<?> ListaMenuPrueba2() throws Exception {
 
 		List<MenuPrueba> menulistaprueba = menuprueba.findByParentidIsNull();
@@ -405,5 +436,5 @@ public class UsuarioController {
 
 		return ResponseEntity.ok(usuariologindatos);
 	}
-	
+	*/
 }

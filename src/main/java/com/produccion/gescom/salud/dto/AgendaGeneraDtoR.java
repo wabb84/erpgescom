@@ -22,4 +22,7 @@ public class AgendaGeneraDtoR {
     private Long   idsocieda;
     private Long   idusuario;
     
+    private String fechai;
+	private String fechaf;
+    
 }

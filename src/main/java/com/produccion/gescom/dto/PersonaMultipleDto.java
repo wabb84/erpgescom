@@ -30,4 +30,7 @@ public interface PersonaMultipleDto {
 	String	getNumeroserie();
 	String	getNombretutor();
 	Long	getIdpersprof();
+	String	getTipoparentutor();
+	Long	getIdtipodoctutor();
+	String  getNumerodoctutor();
 }

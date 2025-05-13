@@ -14,8 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.produccion.gescom.security.jwt.JwtUtils;
-//import com.produccion.gescom.services.UserDetailsServiceImpl;
-import com.produccion.gescom.services.UserDetailsServiceImpl;
+import com.produccion.gescom.services.impl.UserDetailsServiceImpl;
 
 //import com.produccion.consultaenlineach.security.jwt.JwtUtils;
 //import com.produccion.consultaenlineach.service.UserDetailsServiceImpl;

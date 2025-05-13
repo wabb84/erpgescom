@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import com.produccion.gescom.dto.PersonamDto;
 import com.produccion.gescom.dto.PersonaDto;
 import com.produccion.gescom.entity.EEstadoCivil;
 import com.produccion.gescom.entity.ETipoPersona;
+import com.produccion.gescom.entity.ETipotutor;
 import com.produccion.gescom.entity.EVigencia;
 import com.produccion.gescom.entity.Pais;
 import com.produccion.gescom.entity.Persona;
@@ -35,6 +38,7 @@ import jakarta.validation.Valid;
 @Controller
 @CrossOrigin
 @RequestMapping ("/persona")
+@Validated
 public class PersonaController {
 //	private static final Log logger = LogFactory.getLog(PersonaController.class);
 	
@@ -44,7 +48,7 @@ public class PersonaController {
 	@Autowired
 	private PersprofService persprofservice;
 	
-	@PostMapping("/lista")
+	/*@PostMapping("/lista")
 	public ResponseEntity<?> ListaPersona(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception {
 		
 		String buscarpor = personaDtoR.getBuscarPor();
@@ -52,10 +56,10 @@ public class PersonaController {
 		
 		List<PersonaDto> personalista = personaservice.ListaPersona( buscarpor, buscartext );
 		return ResponseEntity.ok( personalista );
-	}
+	}*/
 	
 	@PostMapping("/listamultiple")
-	public ResponseEntity<?> ListaPersonaMultiple(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception {
+	public ResponseEntity<?> ListaPersonaMultiple(@Valid @RequestBody PersonaDtoR personaDtoR, BindingResult result) throws Exception  {
 		
 		List<PersonaMultipleDto> personalistamultiple = personaservice.ListaPersonaMultiple(personaDtoR.getBuscarText(), personaDtoR.getBuscarPor(), personaDtoR.getIdsocieda());
 
@@ -63,7 +67,9 @@ public class PersonaController {
 	}
 
 	@PostMapping("/nuevo")
-	public ResponseEntity<?> NuevaPersona( @Valid @RequestBody PersonaDtoR personaDtor, BindingResult result) throws Exception {
+	//public ResponseEntity<?> NuevaPersona(@RequestBody @Valid PersonaDtoR personaDtor, BindingResult result) throws Exception  {
+	//Para interceptar mensajes de validacion 1. debe tener anotacion @Valid y no debe tener BindingResult
+	public ResponseEntity<?> NuevaPersona(@RequestBody @Valid PersonaDtoR personaDtor) throws Exception  {
 		Map<String, Object> response = new HashMap<>();
 		
 		PersonaDto personabusxdoc = personaservice.consultanuevoxdoc( personaDtor.getTipoDocumento(), personaDtor.getNumerodocumento(), personaDtor.getIdsocieda() );
@@ -109,10 +115,14 @@ public class PersonaController {
 		persona.setEmail(personaDtor.getEmail());
 		persona.setDomicilio(personaDtor.getDomicilio());
 		persona.setCodubigeo(personaDtor.getCodubigeo());
-		persona.setTutor(personaDtor.getTutor());
+		//persona.setTutor(personaDtor.getTutor());
 		persona.setObservacion(personaDtor.getObservacion());
-		
-		persona.setIdusuario( personaDtor.getIdusuario() );
+		persona.setTipoparentutor(personaDtor.getTipoparentutor().equals("P") ? ETipotutor.P : personaDtor.getTipoparentutor().equals("M") ? ETipotutor.M : ETipotutor.A );
+		persona.setIdtipodoctutor(personaDtor.getIdtipodoctutor());
+		persona.setApellnombtutor(personaDtor.getApellnombtutor());
+		persona.setNumerodoctutor(personaDtor.getNumerodoctutor());
+
+		persona.setIdusuario( personaDtor.getIdusuario());
 		persona.setIdusuariom(0L);
 		persona.prePersist();
 		
@@ -143,10 +153,10 @@ public class PersonaController {
 			}
 			
 		    response.put("mensaje",personaDtor.getTipoper().equals("PE") ? "Datos de Persona grabada con exito" : "Datos de Médico grabada con exito");
-		} catch (Exception e) {
-		      //response.put("error",personaDtor.getTipoper().equals("PE") ? "Error al Grabar Datos de Persona : " + e.getMessage() : "Error al Grabar Datos del Médico : " + e.getMessage());
+		//} catch (Exception e) {
+		} catch (Exception  e) {
 			  response.put("resultado", 0);
-			  response.put("mensaje", "personaDtor.getTipoper().equals(\"PE\") ? \"Error al Grabar Datos de Persona : \" + e.getMessage() : \"Error al Grabar Datos del Médico : \" + e.getMessage()");
+			  response.put("mensaje", personaDtor.getTipoper().equals("PE") ? "Error al Grabar Datos de Persona : " + e.getMessage() : "Error al Grabar Datos del Médico : " + e.getMessage());
 			  response.put("dato","");
 		      //return new ResponseEntity<Map<String,Object>>(response , HttpStatus.BAD_REQUEST);
 		      return ResponseEntity.ok(response);
@@ -236,9 +246,14 @@ public class PersonaController {
 		persona.setEmail(personaDtoR.getEmail());
 		persona.setDomicilio(personaDtoR.getDomicilio());
 		persona.setCodubigeo(personaDtoR.getCodubigeo());
-		persona.setTutor(personaDtoR.getTutor());
+//		persona.setTutor(personaDtoR.getTutor());
 	    persona.setSexo( personaDtoR.getSexo() );
 	    persona.setObservacion(personaDtoR.getObservacion());
+		persona.setTipoparentutor(personaDtoR.getTipoparentutor().equals("P") ? ETipotutor.P : personaDtoR.getTipoparentutor().equals("M") ? ETipotutor.M : ETipotutor.A );
+		persona.setIdtipodoctutor(personaDtoR.getIdtipodoctutor());
+		persona.setApellnombtutor(personaDtoR.getApellnombtutor());
+		persona.setNumerodoctutor(personaDtoR.getNumerodoctutor());
+	    
 	    persona.setVigencia(personaDtoR.getVigencia().equals("A") ? EVigencia.A : EVigencia.I);
 	    persona.setIdusuariom(personaDtoR.getIdusuario());
 	    

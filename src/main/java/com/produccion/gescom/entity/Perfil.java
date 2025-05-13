@@ -28,25 +28,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="perfil")
+@Table(name="perfil", schema="seguridad")
 public class Perfil extends Auditable<String> implements Serializable  {
 	 private static final long serialVersionUID = 1L;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 @Column(name="idperfil", unique=true, nullable=false)
-	 private Long id;
+	 private Long idperfil;
 	 
 	 @NotNull
 	 @NotBlank(message = "Nombre de Perfil")
-	 @Column(name="desperfil")
 	 private String desperfil;
 	 
 	 @Enumerated(EnumType.STRING)
 	 private EVigencia vigencia;
 	 
 	 @NotNull
-	 @Column(name="idsocieda")
 	 private Long idsocieda;
 	 
 	 @OneToMany(mappedBy = "perfilmapdet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -56,4 +54,3 @@ public class Perfil extends Auditable<String> implements Serializable  {
 		perfildet = new ArrayList<Perfildet>();
 	 }
 }
-

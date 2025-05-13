@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.produccion.gescom.dto.PeriodoDto;
 import com.produccion.gescom.dto.PeriodoDtoR;
-import com.produccion.gescom.dto.UsuarioDtoR;
+//import com.produccion.gescom.dto.UsuarioDtoR;
 import com.produccion.gescom.services.PeriodoService;
 
 import jakarta.validation.Valid;

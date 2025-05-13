@@ -9,4 +9,5 @@ public interface ConfAgenDto {
 	String getMes();
 	String getDesde();
 	String getHasta();
+	Long getCantidad();
 }
